@@ -1,0 +1,65 @@
+# .dockerignore for Contract Decision Engine
+
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+.pytest_cache
+.coverage
+htmlcov
+.tox
+.venv
+venv
+env
+*.egg-info
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Data (will be mounted as volumes)
+uploads/*
+data/*
+!data/.gitkeep
+
+# Documentation
+docs/*.odt
+
+# Test files
+test_*.pdf
+
+# Misc
+*.md
+!README.md
+*.csv
+*.txt
+!requirements.txt
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Large files
+*.csv
+full_*.csv
+
+# Lineage/debug files
+*lineage*
+*bug*
+*metadata*

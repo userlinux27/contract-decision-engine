@@ -1,0 +1,50 @@
+{
+  "decision": "sign_after_changes",
+  "confidence": 0.91,
+  "top_reasons": [
+    {
+      "factor": "Unlimited liability",
+      "weight": 30,
+      "reason": "Исполнитель несёт ответственность без ограничения суммы."
+    },
+    {
+      "factor": "Payment terms favor client",
+      "weight": 20,
+      "reason": "Оплата через 60 дней после подписания акта."
+    },
+    {
+      "factor": "IP ownership too broad",
+      "weight": 25,
+      "reason": "Все права на интеллектуальную собственность переходят заказчику."
+    }
+  ],
+  "all_findings": [
+    {
+      "clause": "4.2",
+      "type": "unlimited_liability",
+      "severity": "critical",
+      "confidence": 0.96,
+      "reason": "Исполнитель несёт ответственность без ограничения суммы.",
+      "original_text": "Supplier shall be liable without limitation for any damages arising from or related to this Agreement.",
+      "suggested_rewrite": "Supplier's total liability arising from or related to this Agreement shall not exceed the total fees paid by Client in the twelve (12) months immediately preceding the claim."
+    },
+    {
+      "clause": "5.1",
+      "type": "payment_terms_unfavorable",
+      "severity": "medium",
+      "confidence": 0.89,
+      "reason": "Оплата через 60 дней после получения счёта — это долгий срок для исполнителя.",
+      "original_text": "Client shall pay all undisputed invoices within sixty (60) days of receipt.",
+      "suggested_rewrite": "Client shall pay all undisputed invoices within fifteen (15) days of receipt."
+    },
+    {
+      "clause": "9.3",
+      "type": "ip_ownership_too_broad",
+      "severity": "critical",
+      "confidence": 0.88,
+      "reason": "Все права на интеллектуальную собственность, включая предшествующие наработки, переходят заказчику.",
+      "original_text": "All intellectual property developed during the project shall belong exclusively to the Client, including all pre-existing materials used therein.",
+      "suggested_rewrite": "All intellectual property developed specifically for this project shall belong to the Client upon full payment. Supplier retains all rights to pre-existing materials and generic tools used in the project."
+    }
+  ]
+}

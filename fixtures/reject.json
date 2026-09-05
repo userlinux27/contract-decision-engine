@@ -1,0 +1,50 @@
+{
+  "decision": "do_not_sign",
+  "confidence": 0.87,
+  "top_reasons": [
+    {
+      "factor": "Unlimited liability",
+      "weight": 30,
+      "reason": "Исполнитель несёт полную и неограниченную ответственность."
+    },
+    {
+      "factor": "IP ownership too broad",
+      "weight": 25,
+      "reason": "Заказчику переходят права даже на личные проекты исполнителя."
+    },
+    {
+      "factor": "No termination clause",
+      "weight": 25,
+      "reason": "Договор невозможно расторгнуть до полного исполнения."
+    }
+  ],
+  "all_findings": [
+    {
+      "clause": "3.1",
+      "type": "unlimited_liability",
+      "severity": "critical",
+      "confidence": 0.97,
+      "reason": "Исполнитель несёт неограниченную ответственность за любые убытки, включая косвенные.",
+      "original_text": "Supplier shall indemnify and hold harmless the Client against all claims, losses, damages, liabilities, costs and expenses of any kind whatsoever.",
+      "suggested_rewrite": null
+    },
+    {
+      "clause": "7.2",
+      "type": "ip_ownership_too_broad",
+      "severity": "critical",
+      "confidence": 0.85,
+      "reason": "Заказчику переходят права на всю интеллектуальную собственность, созданную в период действия договора, включая личные проекты.",
+      "original_text": "Any and all intellectual property created by Supplier during the term of this Agreement shall be the exclusive property of Client.",
+      "suggested_rewrite": null
+    },
+    {
+      "clause": "10.1",
+      "type": "no_termination_clause",
+      "severity": "critical",
+      "confidence": 0.82,
+      "reason": "Договор не содержит пункта о расторжении. Исполнитель обязан завершить проект даже при нарушении условий заказчиком.",
+      "original_text": "This Agreement shall remain in effect until all Services have been completed to Client's satisfaction.",
+      "suggested_rewrite": null
+    }
+  ]
+}

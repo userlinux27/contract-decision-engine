@@ -1,0 +1,153 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contract Decision Engine</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="/static/js/app.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Contract Decision Engine</h1>
+            <p class="subtitle">Upload a contract PDF. Get instant risk analysis.</p>
+        </header>
+
+        <main>
+            <!-- Upload Section -->
+            <section id="upload-section" class="card">
+                <h2>Upload Contract</h2>
+                <div class="upload-area" id="drop-area">
+                    <input type="file" id="file-input" accept=".pdf" hidden>
+                    <div class="upload-icon">📄</div>
+                    <p>Drag & drop your PDF here, or</p>
+                    <button class="btn-primary" onclick="document.getElementById('file-input').click()">
+                        Choose File
+                    </button>
+                    <p class="upload-hint">Maximum file size: 10 MB</p>
+                </div>
+
+                <div class="demo-section">
+                    <h3>Try Demo Contracts</h3>
+                    <div class="demo-buttons">
+                        <button class="btn-demo safe" onclick="loadDemo('safe')">Safe Agreement</button>
+                        <button class="btn-demo changes" onclick="loadDemo('changes')">Changes Recommended</button>
+                        <button class="btn-demo reject" onclick="loadDemo('reject')">High Risk</button>
+                    </div>
+                </div>
+
+                <div class="privacy-notice">
+                    <h3>🔒 Your contract stays private</h3>
+                    <p>Your PDF is not used to train AI models. Your uploaded contract is automatically deleted after analysis and is not stored for future use.</p>
+                    <p>No account required. No selling or sharing of your contract data.</p>
+                </div>
+            </section>
+
+            <!-- Loading Section -->
+            <section id="loading-section" class="card hidden">
+                <h2>Analyzing Contract</h2>
+                <div class="loading-spinner"></div>
+                <p id="loading-message">Uploading…</p>
+            </section>
+
+            <!-- Error Section -->
+            <section id="error-section" class="card hidden">
+                <h2>Error</h2>
+                <div class="error-icon">⚠️</div>
+                <p id="error-message">An error occurred.</p>
+                <button class="btn-primary" onclick="showMain()">Try again</button>
+            </section>
+
+            <!-- Result Section -->
+            <section id="result-section" class="card hidden">
+                <div class="result-header">
+                    <h2>Analysis Result</h2>
+                    <button class="btn-secondary" onclick="showMain()">← Analyze another</button>
+                </div>
+
+                <!-- Traffic Light - MAIN VISUAL ELEMENT -->
+                <div class="traffic-light">
+                    <div class="light" id="traffic-light-safe">
+                        <div class="bulb"></div>
+                        <div class="label">Ready to Sign</div>
+                    </div>
+                    <div class="light" id="traffic-light-changes">
+                        <div class="bulb"></div>
+                        <div class="label">Review Recommended</div>
+                    </div>
+                    <div class="light" id="traffic-light-reject">
+                        <div class="bulb"></div>
+                        <div class="label">High Risk</div>
+                    </div>
+                </div>
+
+                <div class="decision-summary">
+                    <h3 id="decision-text">Ready to Sign</h3>
+                    <p id="confidence-text">93% confidence</p>
+                </div>
+
+                <div class="analysis-grid">
+                    <!-- Document Understanding -->
+                    <div class="analysis-card">
+                        <h3>Document Understanding</h3>
+                        <div class="info-row">
+                            <span class="label">Document Type:</span>
+                            <span id="document-type">Service Agreement</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Classification Confidence:</span>
+                            <span id="classification-confidence">95%</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Fully Supported:</span>
+                            <span id="supported-status">Yes</span>
+                        </div>
+                    </div>
+
+                    <!-- Document Information -->
+                    <div class="analysis-card">
+                        <h3>Document Information</h3>
+                        <div class="info-row">
+                            <span class="label">Pages:</span>
+                            <span id="pages-count">5</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Estimated Reading Time:</span>
+                            <span id="reading-time">10 min</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Language:</span>
+                            <span id="language-detected">English</span>
+                        </div>
+                    </div>
+
+                    <!-- Analysis -->
+                    <div class="analysis-card full-width">
+                        <h3>Analysis</h3>
+                        <div class="findings-section">
+                            <h4>Key Findings</h4>
+                            <ul id="findings-list">
+                                <!-- Findings will be populated here -->
+                            </ul>
+                        </div>
+                        <div class="reasons-section">
+                            <h4>Top Reasons</h4>
+                            <ul id="top-reasons-list">
+                                <!-- Top reasons will be populated here -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>
+                <a href="/static/about.html" class="footer-link">About this service</a>
+                • This is a demo product. Not legal advice.
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

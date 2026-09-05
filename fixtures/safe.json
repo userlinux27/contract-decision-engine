@@ -1,0 +1,41 @@
+{
+  "decision": "safe_to_sign",
+  "confidence": 0.93,
+  "top_reasons": [
+    {
+      "factor": "Liability is capped",
+      "weight": 0,
+      "reason": "Ответственность ограничена суммой договора."
+    },
+    {
+      "factor": "Payment terms are balanced",
+      "weight": 0,
+      "reason": "Оплата в течение 15 дней — стандартное условие."
+    },
+    {
+      "factor": "IP ownership is fair",
+      "weight": 0,
+      "reason": "Интеллектуальная собственность распределена разумно."
+    }
+  ],
+  "all_findings": [
+    {
+      "clause": "4.2",
+      "type": "liability_capped",
+      "severity": "low",
+      "confidence": 0.95,
+      "reason": "Ответственность ограничена суммой, уплаченной за последние 12 месяцев.",
+      "original_text": "Supplier's total liability shall not exceed the fees paid in the twelve months prior to the claim.",
+      "suggested_rewrite": null
+    },
+    {
+      "clause": "5.1",
+      "type": "payment_terms_standard",
+      "severity": "low",
+      "confidence": 0.91,
+      "reason": "Стандартные условия оплаты, защищающие обе стороны.",
+      "original_text": "Payment shall be made within 15 days of invoice receipt.",
+      "suggested_rewrite": null
+    }
+  ]
+}
