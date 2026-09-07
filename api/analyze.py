@@ -4,7 +4,7 @@ API для анализа контрактов.
 """
 
 import os
-from fastapi import APIRouter, UploadFile, File, HTTPException, BackgroundTasks
+from fastapi import APIRouter, UploadFile, File, HTTPException, BackgroundTasks, Form
 from fastapi.responses import JSONResponse
 
 from services.task_service import task_service, TaskStatus
@@ -23,7 +23,13 @@ analysis_service = AnalysisService(task_service)
 @router.post("/analyze")
 async def analyze_contract(
     file: UploadFile = File(...),
-    background_tasks: BackgroundTasks = None
+    background_tasks: BackgroundTasks = None,
+    # Template attribution fields (optional, from template page CTA)
+    template_slug: str = Form(None),
+    cta_location: str = Form(None),
+    template_page_url: str = Form(None),
+    template_referrer: str = Form(None),
+    template_timestamp: str = Form(None)
 ):
     """
     Загружает PDF контракт и запускает анализ.
@@ -31,6 +37,11 @@ async def analyze_contract(
     Args:
         file: PDF файл контракта
         background_tasks: FastAPI BackgroundTasks для асинхронной обработки
+        template_slug: slug шаблона, с которого пришел пользователь
+        cta_location: расположение CTA (hero_button, inline_banner, bottom_banner)
+        template_page_url: URL страницы шаблона
+        template_referrer: referrer страницы шаблона
+        template_timestamp: timestamp посещения шаблона
         
     Returns:
         JSONResponse с task_id и статусом
@@ -52,8 +63,17 @@ async def analyze_contract(
     # 4. Сохраняем файл
     filepath = document_service.save_document(task_id, contents)
     
-    # 5. Логируем событие
-    log_event(task_id, "upload", file_size_kb=len(contents) // 1024)
+    # 5. Логируем событие с атрибуцией шаблона
+    log_event(
+        task_id, 
+        "upload", 
+        file_size_kb=len(contents) // 1024,
+        template_slug=template_slug,
+        cta_location=cta_location,
+        template_page_url=template_page_url,
+        template_referrer=template_referrer,
+        template_timestamp=template_timestamp
+    )
     
     # 6. Запускаем анализ в фоне
     if background_tasks:
@@ -81,7 +101,7 @@ async def analyze_contract(
 async def health_check():
     """
     Проверка здоровья API.
-    
+
     Returns:
         JSONResponse с статусом сервиса
     """
@@ -90,3 +110,4 @@ async def health_check():
         "service": "Contract Decision Engine API",
         "version": "v1.0"
     })
+

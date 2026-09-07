@@ -1,0 +1,68 @@
+{
+  "slug": "freelance-agreement",
+  "meta": {
+    "title": "Freelance Agreement Template (Free) | Workmatic",
+    "description": "Download a free Freelance Agreement template. Professional starting-point contract for freelance engagements. Covers deliverables, revisions, payment schedule, IP rights, and kill fee."
+  },
+  "jurisdiction": "US (General)",
+  "h1": "Freelance Agreement",
+  "subtitle": "A professional starting-point template for freelance engagements. Covers deliverables, revision rounds, payment milestones, IP transfer, and kill fee protection.",
+  "docx_download_url": "/templates/downloads/freelance-agreement.docx",
+  "contract_document": "freelance-agreement.md",
+  "key_clauses_to_watch": [
+    {
+      "title": "Deliverables & Acceptance",
+      "clause_ref": "Section 1",
+      "why_it_matters": "Define exactly what 'done' looks like. Specify file formats, revision rounds, and acceptance criteria to avoid endless revisions."
+    },
+    {
+      "title": "Revision Rounds",
+      "clause_ref": "Section 2",
+      "why_it_matters": "Limit included revisions (e.g., 2 rounds). Additional revisions should be billable at your hourly rate."
+    },
+    {
+      "title": "Payment Milestones",
+      "clause_ref": "Section 3",
+      "why_it_matters": "Tie payments to milestones, not dates. Include deposit (25-50%) upfront. Final payment before final file delivery."
+    },
+    {
+      "title": "Kill Fee",
+      "clause_ref": "Section 4",
+      "why_it_matters": "If client cancels mid-project, you keep deposit + pay for work completed. Essential protection."
+    },
+    {
+      "title": "Intellectual Property",
+      "clause_ref": "Section 5",
+      "why_it_matters": "IP transfers upon FULL payment only. Until then, you retain copyright. Client gets license only after payment."
+    },
+    {
+      "title": "Portfolio Rights",
+      "clause_ref": "Section 6",
+      "why_it_matters": "Retain right to showcase work in portfolio (with client approval for confidential projects)."
+    },
+    {
+      "title": "Late Payment",
+      "clause_ref": "Section 7",
+      "why_it_matters": "Interest on overdue amounts + right to pause work until paid. Don't work for free."
+    }
+  ],
+  "faq": [
+    {
+      "question": "How many revision rounds should I include?",
+      "answer": "Standard is 2-3 rounds included in the base price. Additional rounds billed at your hourly rate. Define what counts as a 'round' (e.g., one consolidated feedback cycle)."
+    },
+    {
+      "question": "What is a kill fee and why do I need it?",
+      "answer": "A kill fee compensates you if the client cancels the project after you've started work. Typically: non-refundable deposit (25-50%) + payment for all work completed to date. Without it, you bear all risk of client cancellation."
+    },
+    {
+      "question": "When does the client get copyright?",
+      "answer": "Only upon FULL payment. Until final payment clears, you retain copyright and the client has only a limited license. This is your primary leverage for getting paid."
+    },
+    {
+      "question": "Can I use this for ongoing retainer work?",
+      "answer": "This template is designed for project-based engagements. For ongoing retainers, you need a different structure: monthly fee, scope cap, rollover terms, and termination notice periods."
+    }
+  ],
+  "last_updated": "2026-01-15"
+}

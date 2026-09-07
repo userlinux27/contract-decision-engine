@@ -1,0 +1,63 @@
+{
+  "slug": "independent-contractor-agreement",
+  "meta": {
+    "title": "Independent Contractor Agreement Template (Free) | Workmatic",
+    "description": "Download a free Independent Contractor Agreement template. Professional starting-point contract for hiring contractors. Includes payment terms, IP assignment, termination, and liability clauses."
+  },
+  "jurisdiction": "US (General)",
+  "h1": "Independent Contractor Agreement",
+  "subtitle": "A professional starting-point template for hiring independent contractors. Covers scope, payment, IP ownership, confidentiality, and termination.",
+  "docx_download_url": "/templates/downloads/independent-contractor-agreement.docx",
+  "contract_document": "independent-contractor-agreement.md",
+  "key_clauses_to_watch": [
+    {
+      "title": "Scope of Services",
+      "clause_ref": "Section 1",
+      "why_it_matters": "Vague scope leads to scope creep. Define deliverables, timelines, and acceptance criteria explicitly."
+    },
+    {
+      "title": "Payment Terms",
+      "clause_ref": "Section 4",
+      "why_it_matters": "Net-30 or Net-60 favors the client. Push for Net-15 or payment upon milestone completion."
+    },
+    {
+      "title": "Intellectual Property Assignment",
+      "clause_ref": "Section 6",
+      "why_it_matters": "Ensure work product IP transfers to you upon full payment. Watch for overbroad clauses claiming pre-existing IP."
+    },
+    {
+      "title": "Termination",
+      "clause_ref": "Section 8",
+      "why_it_matters": "Both parties should be able to terminate with reasonable notice. Avoid lock-in without cause."
+    },
+    {
+      "title": "Liability Limitation",
+      "clause_ref": "Section 9",
+      "why_it_matters": "Contractor liability should be capped (e.g., fees paid in last 12 months). Unlimited liability is a red flag."
+    },
+    {
+      "title": "Confidentiality",
+      "clause_ref": "Section 7",
+      "why_it_matters": "Mutual confidentiality protects both sides. Define what's confidential and for how long."
+    }
+  ],
+  "faq": [
+    {
+      "question": "Is this template legally binding?",
+      "answer": "This template is a professional starting point. When properly executed by both parties, it can form a binding contract. However, laws vary by jurisdiction and specific circumstances. Consider having a qualified attorney review your final agreement."
+    },
+    {
+      "question": "Can I use this for international contractors?",
+      "answer": "This template is designed for US domestic engagements. For international contractors, you'll need to address jurisdiction, governing law, tax treaty implications, and local labor law classification risks. Consult local counsel."
+    },
+    {
+      "question": "What's the difference between an employee and independent contractor?",
+      "answer": "Classification depends on control, independence, and economic reality tests (varying by state and federal law). Misclassification carries significant penalties. This template assumes a valid independent contractor relationship."
+    },
+    {
+      "question": "Does this template include a non-compete?",
+      "answer": "No. Non-competes are increasingly restricted or unenforceable in many US states. Consider a narrowly tailored non-solicitation clause instead, and check your state's current laws."
+    }
+  ],
+  "last_updated": "2026-01-15"
+}

@@ -1,0 +1,68 @@
+{
+  "slug": "master-services-agreement-msa",
+  "meta": {
+    "title": "Master Services Agreement (MSA) Template (Free) | Workmatic",
+    "description": "Download a free Master Services Agreement template. Professional starting-point MSA for ongoing service relationships. Covers scope, fees, SLA, IP, liability, termination, and change orders."
+  },
+  "jurisdiction": "US (General)",
+  "h1": "Master Services Agreement (MSA)",
+  "subtitle": "A professional starting-point template for ongoing service relationships. Covers scope, fees, service levels, IP ownership, liability caps, termination, and change order process.",
+  "docx_download_url": "/templates/downloads/master-services-agreement-msa.docx",
+  "contract_document": "master-services-agreement-msa.md",
+  "key_clauses_to_watch": [
+    {
+      "title": "Scope & Statement of Work",
+      "clause_ref": "Section 1",
+      "why_it_matters": "MSA governs the relationship; each project is a separate SOW. Ensure SOWs incorporate MSA terms and define deliverables, timeline, acceptance criteria."
+    },
+    {
+      "title": "Fees & Payment",
+      "clause_ref": "Section 3",
+      "why_it_matters": "Define rate card, invoicing frequency, payment terms (Net 15-30), late fees. Address expense reimbursement with caps and pre-approval."
+    },
+    {
+      "title": "Service Levels (SLA)",
+      "clause_ref": "Section 4",
+      "why_it_matters": "Define uptime, response times, resolution times, credits for misses. Keep SLAs measurable and tied to specific services."
+    },
+    {
+      "title": "Intellectual Property",
+      "clause_ref": "Section 5",
+      "why_it_matters": "Client owns deliverables; Provider retains methodology/tools. Critical distinction for repeatable service providers."
+    },
+    {
+      "title": "Liability Cap",
+      "clause_ref": "Section 7",
+      "why_it_matters": "Cap at fees paid (12 months). Carve-outs for IP, confidentiality, data breach, fraud. Watch for uncapped indemnity."
+    },
+    {
+      "title": "Term & Termination",
+      "clause_ref": "Section 8",
+      "why_it_matters": "MSA term vs. SOW term. Termination for convenience (30-90 days). Termination for cause with cure period. Effect on active SOWs."
+    },
+    {
+      "title": "Change Orders",
+      "clause_ref": "Section 9",
+      "why_it_matters": "Formal process for scope changes. Written, signed, with fee/timeline impact. Prevents scope creep."
+    }
+  ],
+  "faq": [
+    {
+      "question": "MSA vs SOW",
+      "answer": "MSA = master terms governing the relationship (legal, IP, liability, termination). SOW = project-specific scope, timeline, deliverables, fees. You sign one MSA, then multiple SOWs under it."
+    },
+    {
+      "question": "MSA for SaaS",
+      "answer": "This template is for professional/managed services. SaaS agreements need different terms: subscription fees, uptime SLA, data processing addendum, feature roadmap disclaimers. Use a SaaS-specific template for software subscriptions."
+    },
+    {
+      "question": "Liability cap",
+      "answer": "Standard: 1x annual fees or fees paid in prior 12 months. Carve-outs: IP infringement, confidentiality breach, data protection violations, fraud/willful misconduct, indemnification obligations. Never accept unlimited liability."
+    },
+    {
+      "question": "Active SOWs on termination",
+      "answer": "Typically: active SOWs continue until completion or separate termination. MSA termination does not auto-terminate SOWs unless specified. Define transition obligations (knowledge transfer, data return)."
+    }
+  ],
+  "last_updated": "2026-01-15"
+}

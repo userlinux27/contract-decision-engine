@@ -1,0 +1,68 @@
+{
+  "slug": "non-disclosure-agreement-nda",
+  "meta": {
+    "title": "Non-Disclosure Agreement (NDA) Template (Free) | Workmatic",
+    "description": "Download a free Mutual NDA template. Professional starting-point confidentiality agreement for business discussions. Covers definition, obligations, term, exceptions, and remedies."
+  },
+  "jurisdiction": "US (General)",
+  "h1": "Mutual Non-Disclosure Agreement (NDA)",
+  "subtitle": "A professional starting-point mutual confidentiality agreement for business discussions, partnerships, and negotiations. Protects both parties' confidential information.",
+  "docx_download_url": "/templates/downloads/non-disclosure-agreement-nda.docx",
+  "contract_document": "non-disclosure-agreement-nda.md",
+  "key_clauses_to_watch": [
+    {
+      "title": "Definition of Confidential Information",
+      "clause_ref": "Section 1",
+      "why_it_matters": "Must be specific enough to be enforceable but broad enough to protect. Marking requirement (\"Confidential\" label) creates clarity but can be burdensome."
+    },
+    {
+      "title": "Permitted Purpose",
+      "clause_ref": "Section 2",
+      "why_it_matters": "Restricts use to specific purpose (e.g., \"evaluating potential partnership\"). Prevents misuse for competitive advantage."
+    },
+    {
+      "title": "Obligations & Standard of Care",
+      "clause_ref": "Section 3",
+      "why_it_matters": "At least \"reasonable care\" (same as own secrets). Define who can access (employees, advisors on need-to-know basis)."
+    },
+    {
+      "title": "Exceptions",
+      "clause_ref": "Section 4",
+      "why_it_matters": "Standard carve-outs: public domain, independently developed, rightfully received from third party, legal compulsion (with notice)."
+    },
+    {
+      "title": "Term & Survival",
+      "clause_ref": "Section 5",
+      "why_it_matters": "NDA term (1-3 years typical) vs. confidentiality survival (3-5 years, or perpetual for trade secrets). Don't confuse the two."
+    },
+    {
+      "title": "Return/Destruction of Materials",
+      "clause_ref": "Section 6",
+      "why_it_matters": "Upon request or termination, return or certify destruction. Allow retention of one archival copy for legal compliance."
+    },
+    {
+      "title": "Remedies",
+      "clause_ref": "Section 7",
+      "why_it_matters": "Injunctive relief (no adequate remedy at law). No need to prove actual damages for injunction. Attorney fees clause for enforcement."
+    }
+  ],
+  "faq": [
+    {
+      "question": "Mutual vs. One-Way NDA",
+      "answer": "Mutual NDA: both parties share confidential info (partnerships, M&A, joint ventures). One-Way NDA: only one party discloses (vendor evaluation, investor pitch). This template is mutual - can be used one-way by having one party's disclosures be minimal."
+    },
+    {
+      "question": "How long should confidentiality last?",
+      "answer": "Business info: 2-3 years typical. Trade secrets: perpetual (as long as they remain trade secrets). Don't make everything perpetual - courts may find it unreasonable."
+    },
+    {
+      "question": "Do I need to mark everything Confidential?",
+      "answer": "This template requires marking for written materials. Oral disclosures: confirm in writing within 30 days. Practical tip: use a standard header/footer on documents."
+    },
+    {
+      "question": "Can an NDA prevent someone from working for a competitor?",
+      "answer": "No. NDAs protect information, not employment. Non-competes are separate agreements with much stricter enforceability requirements (and banned in many states). This NDA does not restrict employment."
+    }
+  ],
+  "last_updated": "2026-01-15"
+}

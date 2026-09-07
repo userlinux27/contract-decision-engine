@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ template.meta.title }}</title>
+    <meta name="description" content="{{ template.meta.description }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <meta property="og:title" content="{{ template.meta.title }}">
+    <meta property="og:description" content="{{ template.meta.description }}">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="{{ canonical_url }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ template.meta.title }}">
+    <meta name="twitter:description" content="{{ template.meta.description }}">
+    <link rel="stylesheet" href="/static/styles.css">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "{{ template.h1 }}",
+        "description": "{{ template.meta.description }}",
+        "url": "{{ canonical_url }}",
+        "dateModified": "{{ template.last_updated }}",
+        "mainEntity": {
+            "@type": "CreativeWork",
+            "name": "{{ template.h1 }}",
+            "description": "{{ template.meta.description }}"
+        }
+    }
+    </script>
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="logo">Workmatic</a>
+            <nav>
+                <a href="/templates">Templates</a>
+                <a href="/">Analyze Contract</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="template-hero">
+            <div class="container">
+                <span class="template-badge">{{ template.jurisdiction }}</span>
+                <h1>{{ template.h1 }}</h1>
+                <p class="template-subtitle">{{ template.subtitle }}</p>
+                <div class="hero-cta-group">
+                    <a href="{{ template.docx_download_url }}" class="btn btn-primary" id="download-btn" data-slug="{{ template.slug }}">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        Download Free Template
+                    </a>
+                    <a href="/" class="btn btn-secondary" data-cta-location="hero_button" data-slug="{{ template.slug }}">
+                        Already Have a Contract? Check Risks
+                    </a>
+                </div>
+                <p class="hero-disclaimer">Template is a starting point. The contract you're asked to sign may differ. <a href="/" data-cta-location="hero_button" data-slug="{{ template.slug }}">Check your actual contract →</a></p>
+            </div>
+        </section>
+
+        <section class="template-viewer" id="viewer">
+            <div class="container">
+                <div class="viewer-header">
+                    <h2>Contract Preview</h2>
+                    <button class="btn btn-ghost" id="copy-btn" data-slug="{{ template.slug }}">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                        <span>Copy Contract Text</span>
+                    </button>
+                </div>
+                <div class="viewer-content" id="contract-content">
+                    {{ document_html | safe }}
+                </div>
+            </div>
+        </section>
+
+        <section class="clause-watch">
+            <div class="container">
+                <h2>Key Clauses — What to Watch</h2>
+                <p class="section-lead">These clauses often contain terms that favor the other party. Review carefully before signing.</p>
+                <div class="clauses-grid">
+                    {% for clause in template.key_clauses_to_watch %}
+                    <article class="clause-card">
+                        <div class="clause-header">
+                            <span class="clause-ref">{{ clause.clause_ref }}</span>
+                            <h3>{{ clause.title }}</h3>
+                        </div>
+                        <p class="clause-why">{{ clause.why_it_matters }}</p>
+                    </article>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <section class="conversion-bridge">
+            <div class="container">
+                <div class="bridge-content">
+                    <h2>Did the client send you their own version instead?</h2>
+                    <p>This template is a <strong>starting point</strong>. The contract from the other party may have different terms — broader liability, weaker IP protection, unfavorable termination, or hidden fees.</p>
+                    <a href="/" class="btn btn-primary btn-large" data-cta-location="inline_banner" data-slug="{{ template.slug }}">
+                        Upload Client's Contract →
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="template-faq">
+            <div class="container">
+                <h2>Frequently Asked Questions</h2>
+                <div class="faq-list">
+                    {% for item in template.faq %}
+                    <details class="faq-item">
+                        <summary>{{ item.question }}</summary>
+                        <p>{{ item.answer }}</p>
+                    </details>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        {% if related_templates %}
+        <section class="related-templates">
+            <div class="container">
+                <h2>Related Templates</h2>
+                <div class="templates-grid">
+                    {% for related in related_templates %}
+                    <article class="template-card">
+                        <div class="template-card-header">
+                            <span class="template-jurisdiction">{{ related.jurisdiction }}</span>
+                            <span class="template-updated">Updated {{ related.last_updated }}</span>
+                        </div>
+                        <h3 class="template-title">{{ related.title }}</h3>
+                        <p class="template-subtitle">{{ related.subtitle }}</p>
+                        <a href="/templates/{{ related.slug }}" class="btn btn-outline">View Template</a>
+                    </article>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        <section class="bottom-cta">
+            <div class="container">
+                <div class="cta-card">
+                    <h2>Modifying this template or signing a draft from the other party?</h2>
+                    <p>Don't sign blind. Workmatic checks important contract risks before you sign.</p>
+                    <a href="/" class="btn btn-primary btn-large" data-cta-location="bottom_banner" data-slug="{{ template.slug }}">
+                        Upload Contract for Analysis
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="template-disclaimer">
+            <div class="container">
+                <p><strong>Disclaimer:</strong> Templates and analysis are provided for general informational purposes and do not constitute legal advice. Laws and requirements vary by jurisdiction. Consult a qualified attorney for your specific situation.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2026 Workmatic. Templates and analysis are for informational purposes only and do not constitute legal advice.</p>
+        </div>
+    </footer>
+
+    <script src="/static/js/template-page.js"></script>
+</body>
+</html>

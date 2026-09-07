@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Contract Templates | Workmatic</title>
+    <meta name="description" content="Download free, professional contract templates. Independent Contractor, Freelance, Consulting, NDA, MSA — all with clause-by-clause risk guidance. No signup required.">
+    <link rel="canonical" href="{{ base_url }}/templates">
+    <meta property="og:title" content="Free Contract Templates | Workmatic">
+    <meta property="og:description" content="Professional starting-point contract templates with built-in risk guidance. Download free, then check your actual contract for risks.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ base_url }}/templates">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Free Contract Templates | Workmatic">
+    <meta name="twitter:description" content="Professional contract templates with clause-by-clause risk guidance. Download free.">
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="logo">Workmatic</a>
+            <nav>
+                <a href="/templates" class="active">Templates</a>
+                <a href="/">Analyze Contract</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="templates-hero">
+            <div class="container">
+                <h1>Free Contract Templates</h1>
+                <p class="lead">Professional starting-point templates for common business agreements. Each template includes clause-by-clause risk guidance so you know what to watch before you sign.</p>
+                <div class="hero-cta">
+                    <a href="/" class="btn btn-primary">Already have a contract? Check Risks →</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="templates-catalog">
+            <div class="container">
+                <div class="catalog-filters">
+                    <span class="filter-label">Categories:</span>
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="services">Services</button>
+                    <button class="filter-btn" data-filter="confidentiality">Confidentiality</button>
+                    <button class="filter-btn" data-filter="ongoing">Ongoing</button>
+                </div>
+
+                <div class="templates-grid" id="templates-grid">
+                    {% for template in templates %}
+                    <article class="template-card" data-category="{{ template.category }}">
+                        <div class="template-card-header">
+                            <span class="template-jurisdiction">{{ template.jurisdiction }}</span>
+                            <span class="template-updated">Updated {{ template.last_updated }}</span>
+                        </div>
+                        <h2 class="template-title">{{ template.title }}</h2>
+                        <p class="template-subtitle">{{ template.subtitle }}</p>
+                        <div class="template-card-footer">
+                            <a href="/templates/{{ template.slug }}" class="btn btn-outline">View Template</a>
+                            <a href="/templates/{{ template.slug }}#download" class="btn btn-ghost">Download</a>
+                        </div>
+                    </article>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="container">
+                <h2>Already have a contract from the other party?</h2>
+                <p>Templates are starting points. The contract you're asked to sign may have different terms. Upload it for a risk analysis.</p>
+                <a href="/" class="btn btn-primary btn-large">Analyze My Contract →</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2026 Workmatic. Templates and analysis are for informational purposes only and do not constitute legal advice.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Simple category filtering
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const filter = btn.dataset.filter;
+                document.querySelectorAll('.template-card').forEach(card => {
+                    if (filter === 'all' || card.dataset.category === filter) {
+                        card.style.display = '';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

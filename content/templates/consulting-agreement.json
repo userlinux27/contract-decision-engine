@@ -1,0 +1,68 @@
+{
+  "slug": "consulting-agreement",
+  "meta": {
+    "title": "Consulting Agreement Template (Free) | Workmatic",
+    "description": "Download a free Consulting Agreement template. Professional starting-point contract for consulting engagements. Covers scope, fees, expenses, IP, confidentiality, and liability cap."
+  },
+  "jurisdiction": "US (General)",
+  "h1": "Consulting Agreement",
+  "subtitle": "A professional starting-point template for consulting engagements. Covers advisory scope, fee structure, expense reimbursement, IP ownership, and liability limitation.",
+  "docx_download_url": "/templates/downloads/consulting-agreement.docx",
+  "contract_document": "consulting-agreement.md",
+  "key_clauses_to_watch": [
+    {
+      "title": "Scope of Engagement",
+      "clause_ref": "Section 1",
+      "why_it_matters": "Advisory scope must be distinct from operational execution. Define deliverables as reports, recommendations, analyses — not implementation."
+    },
+    {
+      "title": "Fee Structure",
+      "clause_ref": "Section 3",
+      "why_it_matters": "Choose: hourly, daily, project-based, or retainer. Retainers should define scope cap and rollover terms. Avoid open-ended time commitments."
+    },
+    {
+      "title": "Expense Reimbursement",
+      "clause_ref": "Section 4",
+      "why_it_matters": "Pre-approval required for expenses >$[AMOUNT]. Travel, software, subcontractors — define what's reimbursable and caps."
+    },
+    {
+      "title": "Intellectual Property",
+      "clause_ref": "Section 5",
+      "why_it_matters": "Consultant retains methodology/framework IP. Client owns deliverables. Critical distinction for repeatable consulting methodologies."
+    },
+    {
+      "title": "Confidentiality & Data",
+      "clause_ref": "Section 6",
+      "why_it_matters": "Consultants often access sensitive data. Define data handling, return/destruction on termination, and survival period (3-5 years typical)."
+    },
+    {
+      "title": "Liability Cap",
+      "clause_ref": "Section 8",
+      "why_it_matters": "Cap at fees paid (12 months). Carve-outs for IP, confidentiality, fraud. Professional liability insurance requirement often expected."
+    },
+    {
+      "title": "Non-Solicitation",
+      "clause_ref": "Section 7",
+      "why_it_matters": "Narrow: only personnel directly worked with. 12 months typical. Must be reasonable in geography and scope."
+    }
+  ],
+  "faq": [
+    {
+      "question": "What's the difference between consulting and contracting?",
+      "answer": "Consulting = advisory, strategic, recommendations (reports, analyses). Contracting = execution, deliverables (code, designs, builds). This template is for advisory engagements where you advise but don't implement."
+    },
+    {
+      "question": "Should I use a retainer or project-based fee?",
+      "answer": "Retainer: predictable revenue, ongoing advisory relationship. Define monthly hour cap, rollover policy (use-it-or-lose-it vs. rollover), and termination notice. Project-based: fixed scope, fixed fee, clearer boundaries."
+    },
+    {
+      "question": "Who owns my consulting methodology?",
+      "answer": "You do. This template explicitly retains your methodologies, frameworks, tools, and know-how. Client only owns the specific deliverables (reports, presentations, analyses) created for them."
+    },
+    {
+      "question": "Do I need professional liability insurance?",
+      "answer": "Many clients require it ($1M+ typical). Even if not required, it's prudent for consultants. This template references insurance requirements in Section 9."
+    }
+  ],
+  "last_updated": "2026-01-15"
+}
