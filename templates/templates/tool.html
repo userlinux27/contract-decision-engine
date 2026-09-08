@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Contract Risk Checker | Workmatic</title>
+    <meta name="description" content="Upload your contract and get a free risk check in seconds. See what looks safe, find clauses that deserve attention, and understand the main contract risks.">
+    <link rel="canonical" href="{{ base_url }}/tools/contract-risk-checker">
+    <meta property="og:title" content="Free Contract Risk Checker | Workmatic">
+    <meta property="og:description" content="Upload your contract and get a free risk check in seconds. See what looks safe, find clauses that deserve attention, and understand the main contract risks.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ base_url }}/tools/contract-risk-checker">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Free Contract Risk Checker | Workmatic">
+    <meta name="twitter:description" content="Upload your contract and get a free risk check in seconds.">
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="logo">Workmatic</a>
+            <nav>
+                <a href="/templates">Templates</a>
+                <a href="/tools/contract-risk-checker" class="active">Risk Checker</a>
+                <a href="/">Analyze Contract</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="tool-hero">
+            <div class="container">
+                <h1>Should I Sign This Contract?</h1>
+                <p class="tool-subtitle">Upload your contract and get a free risk check in seconds.</p>
+                <div class="tool-benefits">
+                    <div class="benefit">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        <span>See what looks safe</span>
+                    </div>
+                    <div class="benefit">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                        <span>Find clauses that deserve attention</span>
+                    </div>
+                    <div class="benefit">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        <span>Understand the main contract risks</span>
+                    </div>
+                </div>
+                <div class="tool-trust">
+                    <span class="trust-badge">Free to check</span>
+                    <span class="trust-badge">No account required</span>
+                    <span class="trust-badge">Fast analysis</span>
+                </div>
+                <div class="hero-cta-group">
+                    <button class="btn btn-primary btn-large" id="upload-trigger">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        Check My Contract
+                    </button>
+                    <input type="file" id="file-input" accept=".pdf" hidden>
+                </div>
+                <p class="hero-disclaimer">Your PDF is not used to train AI models. Automatically deleted after analysis. No account required.</p>
+            </div>
+        </section>
+
+        <section class="tool-checks">
+            <div class="container">
+                <h2>What We Check</h2>
+                <p class="section-lead">Our analysis reviews key contract areas that often contain unfavorable terms:</p>
+                <div class="checks-grid">
+                    <article class="check-card">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                        <h3>Payment Terms</h3>
+                        <p>Due dates, late fees, invoicing requirements</p>
+                    </article>
+                    <article class="check-card">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 27c0 2.7-2.3 5-5 5h-4c-2.7 0-5-2.3-5-5V10h14z"></path><path d="M10 27V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v22"></path></svg>
+                        <h3>Termination</h3>
+                        <p>Notice periods, termination for cause, convenience termination</p>
+                    </article>
+                    <article class="check-card">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                        <h3>Liability</h3>
+                        <p>Limitation of liability, indemnification, caps</p>
+                    </article>
+                    <article class="check-card">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                        <h3>Intellectual Property</h3>
+                        <p>IP ownership, assignment, licensing terms</p>
+                    </article>
+                    <article class="check-card">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                        <h3>Confidentiality</h3>
+                        <p>NDA terms, data protection, trade secrets</p>
+                    </article>
+                    <article class="check-card">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                        <h3>Restrictions</h3>
+                        <p>Non-compete, non-solicit, exclusivity</p>
+                    </article>
+                    <article class="check-card">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        <h3>Governing Law</h3>
+                        <p>Jurisdiction, venue, dispute resolution</p>
+                    </article>
+                    <article class="check-card">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                        <h3>Renewal / Auto-Renewal</h3>
+                        <p>Term length, renewal notice, price increases</p>
+                    </article>
+                </div>
+                <p class="checks-disclaimer">This is informational. We do not guarantee detection of all legal issues.</p>
+            </div>
+        </section>
+
+        <section id="upload-section" class="tool-upload">
+            <div class="container">
+                <div class="upload-area" id="drop-area">
+                    <div class="upload-icon">📄</div>
+                    <p>Drag & drop your PDF here, or</p>
+                    <button class="btn btn-primary" onclick="document.getElementById('file-input').click()">
+                        Choose File
+                    </button>
+                    <p class="upload-hint">Maximum file size: 10 MB • PDF only</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="loading-section" class="tool-loading hidden">
+            <div class="container">
+                <div class="loading-spinner"></div>
+                <p id="loading-message">Uploading…</p>
+            </div>
+        </section>
+
+        <section id="error-section" class="tool-error hidden">
+            <div class="container">
+                <div class="error-icon">⚠️</div>
+                <p id="error-message">An error occurred.</p>
+                <button class="btn btn-primary" onclick="resetTool()">Try again</button>
+            </div>
+        </section>
+
+        <section id="result-section" class="tool-result hidden">
+            <div class="container">
+                <div class="result-header">
+                    <h2>Analysis Result</h2>
+                    <button class="btn btn-secondary" onclick="resetTool()">← Check another contract</button>
+                </div>
+                <div class="traffic-light">
+                    <div class="light" id="traffic-light-safe">
+                        <div class="bulb"></div>
+                        <div class="label">Ready to Sign</div>
+                    </div>
+                    <div class="light" id="traffic-light-changes">
+                        <div class="bulb"></div>
+                        <div class="label">Review Recommended</div>
+                    </div>
+                    <div class="light" id="traffic-light-reject">
+                        <div class="bulb"></div>
+                        <div class="label">High Risk</div>
+                    </div>
+                </div>
+                <div class="decision-summary">
+                    <h3 id="decision-text">Ready to Sign</h3>
+                    <p id="confidence-text">93% confidence</p>
+                </div>
+                <div class="analysis-grid">
+                    <div class="analysis-card">
+                        <h3>Document Understanding</h3>
+                        <div class="info-row">
+                            <span class="label">Document Type:</span>
+                            <span id="document-type">Service Agreement</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Classification Confidence:</span>
+                            <span id="classification-confidence">95%</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Fully Supported:</span>
+                            <span id="supported-status">Yes</span>
+                        </div>
+                    </div>
+                    <div class="analysis-card">
+                        <h3>Document Information</h3>
+                        <div class="info-row">
+                            <span class="label">Pages:</span>
+                            <span id="pages-count">5</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Estimated Reading Time:</span>
+                            <span id="reading-time">10 min</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Language:</span>
+                            <span id="language-detected">English</span>
+                        </div>
+                    </div>
+                    <div class="analysis-card full-width">
+                        <h3>Key Findings</h3>
+                        <ul id="findings-list"></ul>
+                    </div>
+                    <div class="analysis-card full-width">
+                        <h3>Areas Checked</h3>
+                        <ul id="areas-checked-list"></ul>
+                    </div>
+                </div>
+                <section class="tool-conversion">
+                    <div class="cta-card">
+                        <h3>Have another contract?</h3>
+                        <a href="/" class="btn btn-primary btn-large" data-cta-location="tool_another">Check Another Contract</a>
+                    </div>
+                    <div class="cta-card">
+                        <h3>Need a contract template instead?</h3>
+                        <a href="/templates" class="btn btn-outline btn-large" data-cta-location="tool_template">Browse Templates</a>
+                    </div>
+                </section>
+                <section id="relevant-template" class="tool-template-suggestion hidden">
+                    <div class="cta-card">
+                        <h3>Looking for a starting-point template?</h3>
+                        <p id="template-suggestion-text"></p>
+                        <a href="" id="template-suggestion-link" class="btn btn-primary" data-cta-location="tool_relevant_template">View Template</a>
+                    </div>
+                </section>
+            </div>
+        </section>
+        <section class="tool-disclaimer">
+            <div class="container">
+                <p><strong>Disclaimer:</strong> Workmatic provides general informational contract analysis. It is not legal advice. Results should not be treated as a substitute for a qualified lawyer. Laws and contract requirements vary by jurisdiction.</p>
+            </div>
+        </section>
+    </main>
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2026 Workmatic. Analysis is for informational purposes only and does not constitute legal advice.</p>
+        </div>
+    </footer>
+    <script src="/static/js/tool-page.js"></script>
+</body>
+</html>

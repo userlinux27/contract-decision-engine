@@ -29,7 +29,15 @@ async def analyze_contract(
     cta_location: str = Form(None),
     template_page_url: str = Form(None),
     template_referrer: str = Form(None),
-    template_timestamp: str = Form(None)
+    template_timestamp: str = Form(None),
+    # Tool attribution fields (optional, from Free Tool page)
+    tool_slug: str = Form(None),
+    tool_page_url: str = Form(None),
+    tool_referrer: str = Form(None),
+    tool_utm_source: str = Form(None),
+    tool_utm_medium: str = Form(None),
+    tool_utm_campaign: str = Form(None),
+    tool_timestamp: str = Form(None)
 ):
     """
     Загружает PDF контракт и запускает анализ.
@@ -42,6 +50,13 @@ async def analyze_contract(
         template_page_url: URL страницы шаблона
         template_referrer: referrer страницы шаблона
         template_timestamp: timestamp посещения шаблона
+        tool_slug: slug инструмента (contract-risk-checker)
+        tool_page_url: URL страницы инструмента
+        tool_referrer: referrer страницы инструмента
+        tool_utm_source: UTM source
+        tool_utm_medium: UTM medium
+        tool_utm_campaign: UTM campaign
+        tool_timestamp: timestamp посещения инструмента
         
     Returns:
         JSONResponse с task_id и статусом
@@ -63,7 +78,7 @@ async def analyze_contract(
     # 4. Сохраняем файл
     filepath = document_service.save_document(task_id, contents)
     
-    # 5. Логируем событие с атрибуцией шаблона
+    # 5. Логируем событие с атрибуцией шаблона и инструмента
     log_event(
         task_id, 
         "upload", 
@@ -72,7 +87,14 @@ async def analyze_contract(
         cta_location=cta_location,
         template_page_url=template_page_url,
         template_referrer=template_referrer,
-        template_timestamp=template_timestamp
+        template_timestamp=template_timestamp,
+        tool_slug=tool_slug,
+        tool_page_url=tool_page_url,
+        tool_referrer=tool_referrer,
+        tool_utm_source=tool_utm_source,
+        tool_utm_medium=tool_utm_medium,
+        tool_utm_campaign=tool_utm_campaign,
+        tool_timestamp=tool_timestamp
     )
     
     # 6. Запускаем анализ в фоне
@@ -110,4 +132,5 @@ async def health_check():
         "service": "Contract Decision Engine API",
         "version": "v1.0"
     })
+
 

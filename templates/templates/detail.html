@@ -42,6 +42,7 @@
     </header>
 
     <main>
+        <!-- Hero Section -->
         <section class="template-hero">
             <div class="container">
                 <span class="template-badge">{{ template.jurisdiction }}</span>
@@ -60,6 +61,7 @@
             </div>
         </section>
 
+        <!-- Contract Viewer -->
         <section class="template-viewer" id="viewer">
             <div class="container">
                 <div class="viewer-header">
@@ -75,6 +77,7 @@
             </div>
         </section>
 
+        <!-- Key Clauses to Watch -->
         <section class="clause-watch">
             <div class="container">
                 <h2>Key Clauses — What to Watch</h2>
@@ -93,18 +96,20 @@
             </div>
         </section>
 
+        <!-- Conversion Bridge -->
         <section class="conversion-bridge">
             <div class="container">
                 <div class="bridge-content">
                     <h2>Did the client send you their own version instead?</h2>
                     <p>This template is a <strong>starting point</strong>. The contract from the other party may have different terms — broader liability, weaker IP protection, unfavorable termination, or hidden fees.</p>
-                    <a href="/" class="btn btn-primary btn-large" data-cta-location="inline_banner" data-slug="{{ template.slug }}">
+                    <a href="/tools/contract-risk-checker" class="btn btn-primary btn-large" data-cta-location="inline_banner" data-slug="{{ template.slug }}">
                         Upload Client's Contract →
                     </a>
                 </div>
             </div>
         </section>
 
+        <!-- FAQ -->
         <section class="template-faq">
             <div class="container">
                 <h2>Frequently Asked Questions</h2>
@@ -119,6 +124,7 @@
             </div>
         </section>
 
+        <!-- Related Templates -->
         {% if related_templates %}
         <section class="related-templates">
             <div class="container">
@@ -140,18 +146,20 @@
         </section>
         {% endif %}
 
+        <!-- Bottom CTA -->
         <section class="bottom-cta">
             <div class="container">
                 <div class="cta-card">
                     <h2>Modifying this template or signing a draft from the other party?</h2>
                     <p>Don't sign blind. Workmatic checks important contract risks before you sign.</p>
-                    <a href="/" class="btn btn-primary btn-large" data-cta-location="bottom_banner" data-slug="{{ template.slug }}">
+                    <a href="/tools/contract-risk-checker" class="btn btn-primary btn-large" data-cta-location="bottom_banner" data-slug="{{ template.slug }}">
                         Upload Contract for Analysis
                     </a>
                 </div>
             </div>
         </section>
 
+        <!-- Disclaimer -->
         <section class="template-disclaimer">
             <div class="container">
                 <p><strong>Disclaimer:</strong> Templates and analysis are provided for general informational purposes and do not constitute legal advice. Laws and requirements vary by jurisdiction. Consult a qualified attorney for your specific situation.</p>

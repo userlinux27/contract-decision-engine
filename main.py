@@ -234,6 +234,7 @@ async def sitemap():
     urls = [
         f"{BASE_URL}/",
         f"{BASE_URL}/templates",
+        f"{BASE_URL}/tools/contract-risk-checker",
     ]
 
     # Template URLs
@@ -258,8 +259,16 @@ async def sitemap():
     return HTMLResponse(content="\n".join(xml_parts), media_type="application/xml")
 
 
+@app.get("/tools/contract-risk-checker", response_class=HTMLResponse)
+async def tool_page(request: Request):
+    """Free Contract Risk Checker tool page."""
+    return templates.TemplateResponse("templates/tool.html", {
+        "request": request,
+        "base_url": BASE_URL,
+    })
+
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
-
 
