@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Uploaded/test documents
+uploads/*.pdf
+
+# Runtime analytics
+data/analytics.csv
+
+# Local environment
+.env
+.env.*
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

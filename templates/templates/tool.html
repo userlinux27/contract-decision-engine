@@ -28,10 +28,12 @@
     </header>
 
     <main>
+        <!-- Hero Section -->
         <section class="tool-hero">
             <div class="container">
                 <h1>Should I Sign This Contract?</h1>
                 <p class="tool-subtitle">Upload your contract and get a free risk check in seconds.</p>
+
                 <div class="tool-benefits">
                     <div class="benefit">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
@@ -46,11 +48,13 @@
                         <span>Understand the main contract risks</span>
                     </div>
                 </div>
+
                 <div class="tool-trust">
                     <span class="trust-badge">Free to check</span>
                     <span class="trust-badge">No account required</span>
                     <span class="trust-badge">Fast analysis</span>
                 </div>
+
                 <div class="hero-cta-group">
                     <button class="btn btn-primary btn-large" id="upload-trigger">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -58,10 +62,12 @@
                     </button>
                     <input type="file" id="file-input" accept=".pdf" hidden>
                 </div>
+
                 <p class="hero-disclaimer">Your PDF is not used to train AI models. Automatically deleted after analysis. No account required.</p>
             </div>
         </section>
 
+        <!-- What We Check Section -->
         <section class="tool-checks">
             <div class="container">
                 <h2>What We Check</h2>
@@ -112,6 +118,7 @@
             </div>
         </section>
 
+        <!-- Upload Section -->
         <section id="upload-section" class="tool-upload">
             <div class="container">
                 <div class="upload-area" id="drop-area">
@@ -125,6 +132,7 @@
             </div>
         </section>
 
+        <!-- Loading Section -->
         <section id="loading-section" class="tool-loading hidden">
             <div class="container">
                 <div class="loading-spinner"></div>
@@ -132,6 +140,7 @@
             </div>
         </section>
 
+        <!-- Error Section -->
         <section id="error-section" class="tool-error hidden">
             <div class="container">
                 <div class="error-icon">⚠️</div>
@@ -140,12 +149,15 @@
             </div>
         </section>
 
+        <!-- Result Section -->
         <section id="result-section" class="tool-result hidden">
             <div class="container">
                 <div class="result-header">
                     <h2>Analysis Result</h2>
                     <button class="btn btn-secondary" onclick="resetTool()">← Check another contract</button>
                 </div>
+
+                <!-- Traffic Light -->
                 <div class="traffic-light">
                     <div class="light" id="traffic-light-safe">
                         <div class="bulb"></div>
@@ -160,11 +172,14 @@
                         <div class="label">High Risk</div>
                     </div>
                 </div>
+
                 <div class="decision-summary">
                     <h3 id="decision-text">Ready to Sign</h3>
                     <p id="confidence-text">93% confidence</p>
                 </div>
+
                 <div class="analysis-grid">
+                    <!-- Document Understanding -->
                     <div class="analysis-card">
                         <h3>Document Understanding</h3>
                         <div class="info-row">
@@ -180,6 +195,8 @@
                             <span id="supported-status">Yes</span>
                         </div>
                     </div>
+
+                    <!-- Document Information -->
                     <div class="analysis-card">
                         <h3>Document Information</h3>
                         <div class="info-row">
@@ -195,15 +212,25 @@
                             <span id="language-detected">English</span>
                         </div>
                     </div>
+
+                    <!-- Key Findings -->
                     <div class="analysis-card full-width">
                         <h3>Key Findings</h3>
-                        <ul id="findings-list"></ul>
+                        <ul id="findings-list">
+                            <!-- Findings will be populated here -->
+                        </ul>
                     </div>
+
+                    <!-- Areas Checked -->
                     <div class="analysis-card full-width">
                         <h3>Areas Checked</h3>
-                        <ul id="areas-checked-list"></ul>
+                        <ul id="areas-checked-list">
+                            <!-- Areas will be populated here -->
+                        </ul>
                     </div>
                 </div>
+
+                <!-- Conversion CTAs -->
                 <section class="tool-conversion">
                     <div class="cta-card">
                         <h3>Have another contract?</h3>
@@ -214,6 +241,8 @@
                         <a href="/templates" class="btn btn-outline btn-large" data-cta-location="tool_template">Browse Templates</a>
                     </div>
                 </section>
+
+                <!-- Relevant Template Suggestion -->
                 <section id="relevant-template" class="tool-template-suggestion hidden">
                     <div class="cta-card">
                         <h3>Looking for a starting-point template?</h3>
@@ -223,17 +252,21 @@
                 </section>
             </div>
         </section>
+
+        <!-- Legal Disclaimer -->
         <section class="tool-disclaimer">
             <div class="container">
                 <p><strong>Disclaimer:</strong> Workmatic provides general informational contract analysis. It is not legal advice. Results should not be treated as a substitute for a qualified lawyer. Laws and contract requirements vary by jurisdiction.</p>
             </div>
         </section>
     </main>
+
     <footer class="site-footer">
         <div class="container">
             <p>&copy; 2026 Workmatic. Analysis is for informational purposes only and does not constitute legal advice.</p>
         </div>
     </footer>
+
     <script src="/static/js/tool-page.js"></script>
 </body>
 </html>
