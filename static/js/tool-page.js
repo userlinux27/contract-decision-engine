@@ -366,7 +366,7 @@
         // Update pipeline info
         const pipeline = data.pipeline;
         document.getElementById('pages-count').textContent = pipeline.pages || 'N/A';
-        document.getElementById('reading-time').textContent = `${pipeline.estimated_reading_time_min || 0} min`;
+        document.getElementById('reading-time').textContent = `${pipeline.estimated_reading_time_min || 0} sec`;
         document.getElementById('language-detected').textContent = pipeline.language || 'en';
 
         // Populate findings

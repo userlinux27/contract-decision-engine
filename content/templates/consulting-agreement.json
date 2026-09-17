@@ -7,7 +7,7 @@
   "jurisdiction": "US (General)",
   "h1": "Consulting Agreement",
   "subtitle": "A professional starting-point template for consulting engagements. Covers advisory scope, fee structure, expense reimbursement, IP ownership, and liability limitation.",
-  "docx_download_url": "/templates/downloads/consulting-agreement.docx",
+  "docx_download_url": "/static/templates/downloads/consulting-agreement.docx",
   "contract_document": "consulting-agreement.md",
   "key_clauses_to_watch": [
     {

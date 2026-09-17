@@ -7,7 +7,7 @@
   "jurisdiction": "US (General)",
   "h1": "Freelance Agreement",
   "subtitle": "A professional starting-point template for freelance engagements. Covers deliverables, revision rounds, payment milestones, IP transfer, and kill fee protection.",
-  "docx_download_url": "/templates/downloads/freelance-agreement.docx",
+  "docx_download_url": "/static/templates/downloads/freelance-agreement.docx",
   "contract_document": "freelance-agreement.md",
   "key_clauses_to_watch": [
     {

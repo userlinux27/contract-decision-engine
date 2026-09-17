@@ -7,7 +7,7 @@
   "jurisdiction": "US (General)",
   "h1": "Independent Contractor Agreement",
   "subtitle": "A professional starting-point template for hiring independent contractors. Covers scope, payment, IP ownership, confidentiality, and termination.",
-  "docx_download_url": "/templates/downloads/independent-contractor-agreement.docx",
+  "docx_download_url": "/static/templates/downloads/independent-contractor-agreement.docx",
   "contract_document": "independent-contractor-agreement.md",
   "key_clauses_to_watch": [
     {

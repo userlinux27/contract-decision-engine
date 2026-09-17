@@ -485,3 +485,262 @@ li:before {
     left: 0;
     color: #71717a;
 }
+
+/* ===== Templates UI (minimal patch) ===== */
+
+.site-header {
+    background: #18181b;
+    border-bottom: 1px solid #27272a;
+}
+
+.site-header .container {
+    max-width: 1100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px;
+}
+
+.site-header .logo {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.site-header nav {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.site-header nav a {
+    color: #a1a1aa;
+    text-decoration: none;
+    font-size: 0.95rem;
+    padding: 8px 14px;
+    border-radius: 8px;
+    transition: background 0.2s, color 0.2s;
+}
+
+.site-header nav a:hover {
+    color: #e4e4e7;
+    background: #1e1e24;
+}
+
+.site-header nav a.active {
+    color: #ffffff;
+    background: #6366f1;
+}
+
+/* Buttons used on Templates pages */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.btn-primary {
+    background: #6366f1;
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background: #5558e6;
+}
+
+.btn-secondary {
+    background: transparent;
+    color: #a1a1aa;
+    border-color: #27272a;
+}
+
+.btn-secondary:hover {
+    color: #e4e4e7;
+    border-color: #6366f1;
+}
+
+/* Download — most prominent action */
+.btn-ghost {
+    background: #6366f1;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.btn-ghost:hover {
+    background: #5558e6;
+}
+
+/* View Template — normal clickable link */
+.btn-outline {
+    background: transparent;
+    color: #e4e4e7;
+    border-color: #27272a;
+}
+
+.btn-outline:hover {
+    border-color: #6366f1;
+    color: #ffffff;
+    background: #1e1e24;
+}
+
+.btn-large {
+    padding: 14px 32px;
+    font-size: 1.05rem;
+}
+
+/* Template catalog/detail layout */
+.templates-hero,
+.template-hero,
+.templates-catalog,
+.template-viewer,
+.clause-watch,
+.template-faq,
+.conversion-bridge,
+.related-templates,
+.bottom-cta,
+.template-disclaimer,
+.cta-section {
+    padding: 32px 0;
+}
+
+.container {
+    max-width: 1100px;
+}
+
+.templates-grid,
+.templates-catalog .container,
+.template-card {
+    width: 100%;
+}
+
+.template-card {
+    background: #18181b;
+    border: 1px solid #27272a;
+    border-radius: 14px;
+    padding: 22px;
+    margin-bottom: 20px;
+}
+
+.template-card-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.template-jurisdiction,
+.template-updated {
+    font-size: 0.78rem;
+    color: #71717a;
+}
+
+.template-title {
+    font-size: 1.25rem;
+    color: #ffffff;
+    margin-bottom: 8px;
+}
+
+.template-subtitle {
+    color: #a1a1aa;
+    font-size: 0.95rem;
+    margin-bottom: 16px;
+}
+
+.template-card-footer {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* Filter buttons */
+.catalog-filters {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+
+.filter-label {
+    color: #a1a1aa;
+    font-size: 0.9rem;
+    margin-right: 6px;
+}
+
+.filter-btn {
+    background: transparent;
+    color: #a1a1aa;
+    border: 1px solid #27272a;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.filter-btn:hover {
+    color: #e4e4e7;
+    border-color: #6366f1;
+}
+
+.filter-btn.active {
+    background: #6366f1;
+    color: #ffffff;
+    border-color: #6366f1;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .site-header .container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    .site-header nav {
+        flex-wrap: wrap;
+    }
+    .template-card-footer {
+        flex-direction: column;
+    }
+    .template-card-footer .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* ===== Templates CTA on main page (minimal) ===== */
+.templates-cta {
+    text-align: center;
+    margin: 24px 0 16px;
+    padding: 20px 24px;
+    background: #18181b;
+    border: 1px solid #27272a;
+    border-radius: 14px;
+}
+
+.templates-cta span {
+    display: block;
+    font-size: 0.95rem;
+    color: #a1a1aa;
+    margin-bottom: 8px;
+}
+
+.templates-cta a {
+    color: #6366f1;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.templates-cta a:hover {
+    color: #818cf8;
+    text-decoration: underline;
+}

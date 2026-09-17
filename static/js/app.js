@@ -85,6 +85,45 @@ function showMain() {
 
 // ========== DEMO FLOW ==========
 
+async function loadDemo(type) {
+    try {
+        showLoading('Loading demo contract…');
+        const resp = await fetch('/analyze/' + type);
+
+        if (!resp.ok) {
+            showError('Demo contract not available');
+            return;
+        }
+
+        const fixture = await resp.json();
+
+        // Adapt fixture format to the shape showToolResult expects
+        const data = {
+            decision: fixture.decision,
+            decision_details: {
+                confidence: fixture.confidence,
+                all_findings: fixture.all_findings || [],
+                top_reasons: fixture.top_reasons || []
+            },
+            classification: {
+                display_name: 'Demo Contract',
+                confidence: 0.95,
+                supported: true
+            },
+            pipeline: {
+                pages: 5,
+                estimated_reading_time_min: 10,
+                language: 'en'
+            }
+        };
+
+        showToolResult(data);
+    } catch (err) {
+        console.error('Demo error:', err);
+        showError('Failed to load demo contract.');
+    }
+}
+
 async function uploadFile(file) {
     try {
         console.log('Uploading:', file.name, file.size);
@@ -270,7 +309,7 @@ function showToolResult(data) {
 
     const pipeline = data.pipeline;
     document.getElementById('pages-count').textContent = pipeline.pages || 'N/A';
-    document.getElementById('reading-time').textContent = `${pipeline.estimated_reading_time_min || 0} min`;
+    document.getElementById('reading-time').textContent = `${pipeline.estimated_reading_time_min || 0} sec`;
     document.getElementById('language-detected').textContent = pipeline.language || 'en';
 
     populateFindings(data.decision_details?.all_findings || []);

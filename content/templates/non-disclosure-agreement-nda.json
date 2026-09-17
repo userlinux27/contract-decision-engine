@@ -7,7 +7,7 @@
   "jurisdiction": "US (General)",
   "h1": "Mutual Non-Disclosure Agreement (NDA)",
   "subtitle": "A professional starting-point mutual confidentiality agreement for business discussions, partnerships, and negotiations. Protects both parties' confidential information.",
-  "docx_download_url": "/templates/downloads/non-disclosure-agreement-nda.docx",
+  "docx_download_url": "/static/templates/downloads/non-disclosure-agreement-nda.docx",
   "contract_document": "non-disclosure-agreement-nda.md",
   "key_clauses_to_watch": [
     {

@@ -7,7 +7,7 @@
   "jurisdiction": "US (General)",
   "h1": "Master Services Agreement (MSA)",
   "subtitle": "A professional starting-point template for ongoing service relationships. Covers scope, fees, service levels, IP ownership, liability caps, termination, and change order process.",
-  "docx_download_url": "/templates/downloads/master-services-agreement-msa.docx",
+  "docx_download_url": "/static/templates/downloads/master-services-agreement-msa.docx",
   "contract_document": "master-services-agreement-msa.md",
   "key_clauses_to_watch": [
     {
