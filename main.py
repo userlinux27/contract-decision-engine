@@ -96,6 +96,13 @@ async def home():
         return HTMLResponse(content=f.read())
 
 
+@app.get("/robots.txt")
+async def robots():
+    """Robots.txt for search engines."""
+    body = f"User-agent: *\nAllow: /\n\nSitemap: {BASE_URL}/sitemap.xml\n"
+    return HTMLResponse(content=body, media_type="text/plain")
+
+
 @app.get("/templates", response_class=HTMLResponse)
 async def templates_catalog(request: Request):
     """Templates catalog page."""
