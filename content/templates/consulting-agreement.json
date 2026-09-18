@@ -1,12 +1,12 @@
 {
   "slug": "consulting-agreement",
   "meta": {
-    "title": "Consulting Agreement Template (Free) | Workmatic",
-    "description": "Download a free Consulting Agreement template. Professional starting-point contract for consulting engagements. Covers scope, fees, expenses, IP, confidentiality, and liability cap."
+    "title": "Free Consulting Agreement Template (Advisory Services) | Workmatic",
+    "description": "Download a free Consulting Agreement template for advisory services. Covers scope, fees, expenses, IP ownership, confidentiality, and liability cap. For consultants who advise — not implement."
   },
   "jurisdiction": "US (General)",
   "h1": "Consulting Agreement",
-  "subtitle": "A professional starting-point template for consulting engagements. Covers advisory scope, fee structure, expense reimbursement, IP ownership, and liability limitation.",
+  "subtitle": "A professional starting-point template for advisory consulting engagements. Covers advisory scope, fee structure, expense reimbursement, IP ownership, and liability limitation. For consultants who advise — not implement.",
   "docx_download_url": "/static/templates/downloads/consulting-agreement.docx",
   "contract_document": "consulting-agreement.md",
   "key_clauses_to_watch": [
