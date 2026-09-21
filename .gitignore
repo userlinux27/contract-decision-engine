@@ -18,3 +18,14 @@ data/analytics.csv
 .idea/
 .DS_Store
 Thumbs.db
+
+# Local backups and archives
+*.tar.gz
+
+# Local assets (not yet integrated)
+favicon.jpg
+логотип.jpg
+фавикоин.jpg
+
+# Internal production notes (not for public repo)
+docs/PRODUCTION_STATE.md

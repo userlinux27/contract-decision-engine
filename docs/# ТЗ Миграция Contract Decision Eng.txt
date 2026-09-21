@@ -1,0 +1,1620 @@
+# ТЗ: Миграция Contract Decision Engine на новую архитектуру
+
+## 0. ЦЕЛЬ
+
+Необходимо перенести серверную версию Contract Decision Engine на новую архитектуру с разделением:
+
+```text
+main.py
+    ↓
+api/
+    ↓
+services/
+    ↓
+engine/
+```
+
+При этом существующая серверная LLM-интеграция должна быть сохранена и продолжить работать:
+
+```text
+engine/llm_interpreter.py
+        ↓
+engine/llm_providers.py
+        ↓
+OpenAI
+        ↓
+gpt-4o-mini
+```
+
+Миграция должна быть **структурной**, а не функциональной.
+
+### Главный принцип
+
+Нельзя в рамках этой задачи:
+
+* менять Decision Engine;
+* менять правила принятия решений;
+* менять thresholds;
+* менять классификацию;
+* менять Rule Detector;
+* менять LLM prompt/поведение без отдельного согласования;
+* заменять OpenAI другим provider;
+* удалять существующую LLM-интеграцию;
+* переносить на сервер старую архитектуру вместо новой;
+* одновременно делать новые продуктовые функции.
+
+---
+
+# 1. ЦЕЛЕВАЯ АРХИТЕКТУРА
+
+Итоговая архитектура должна быть примерно такой:
+
+```text
+                    HTTP
+                     │
+                     ▼
+                 main.py
+                     │
+                     ▼
+                    api/
+                     │
+                     ▼
+          analysis_service.py
+                     │
+          ┌──────────┼──────────┐
+          ▼          ▼          ▼
+       parser    classifier   rule_detector
+          │          │          │
+          └──────────┼──────────┘
+                     ▼
+              decision_engine
+                     │
+                     ▼
+                LLM enrichment
+                     │
+                     ▼
+                  result
+```
+
+При этом:
+
+```text
+main.py
+```
+
+не должен содержать бизнес-логику.
+
+---
+
+# 2. ОБЯЗАТЕЛЬНОЕ УСЛОВИЕ: СУЩЕСТВУЮЩУЮ LLM НЕ ЛОМАТЬ
+
+На сервере уже существует рабочая LLM-интеграция.
+
+Нужно сохранить:
+
+```text
+engine/llm_providers.py
+engine/llm_interpreter.py
+```
+
+и существующую конфигурацию:
+
+```text
+OPENAI_API_KEY
+LLM_PROVIDER=openai
+```
+
+Текущий provider:
+
+```text
+OpenAIProvider
+```
+
+использует:
+
+```text
+gpt-4o-mini
+```
+
+### Жёсткий запрет
+
+ЗАПРЕЩЕНО до отдельного согласования:
+
+* удалять `engine/llm_providers.py`;
+* удалять `engine/llm_interpreter.py`;
+* заменять `OpenAIProvider`;
+* заменять OpenAI;
+* менять модель;
+* удалять `OPENAI_API_KEY`;
+* менять `LLM_PROVIDER`;
+* переносить LLM в другой framework;
+* переписывать LLM orchestration только потому, что "так красивее".
+
+Сначала необходимо провести аудит существующего LLM flow.
+
+Если для совместимости с новой архитектурой потребуется изменение этих файлов — сначала описать изменение и причину.
+
+Не выполнять такое изменение молча.
+
+---
+
+# 3. РОЛЬ LLM
+
+Decision Engine остаётся единственным Source of Truth.
+
+Поток:
+
+```text
+PDF
+ ↓
+Parser
+ ↓
+Classifier
+ ↓
+Rule Detector
+ ↓
+Decision Engine
+ ↓
+Findings
+ ↓
+LLM Interpreter
+ ↓
+Enriched Findings
+```
+
+LLM получает уже определённые системой findings.
+
+LLM может добавить:
+
+```text
+llm_reason
+llm_impact
+llm_suggested_rewrite
+llm_confidence
+```
+
+LLM НЕ имеет права менять:
+
+```text
+decision
+outcome
+risk
+factor detection
+engine result
+```
+
+То есть:
+
+```text
+Decision Engine = decides
+LLM = explains/enriches
+```
+
+---
+
+# 4. НОВЫЙ HTTP FLOW
+
+Новая серверная API-архитектура должна использовать асинхронную модель task-based processing.
+
+Целевой flow:
+
+```text
+POST /api/analyze
+        │
+        ▼
+     task_id
+        │
+        ▼
+   processing
+        │
+        ▼
+ GET /api/analyze/{task_id}
+        │
+        ├── processing
+        ├── completed
+        └── failed
+```
+
+После завершения:
+
+```text
+GET /api/analyze/{task_id}
+```
+
+возвращает результат анализа.
+
+Старая модель:
+
+```text
+POST /analyze
+    ↓
+полный анализ
+    ↓
+HTTP response
+```
+
+не должна быть основой новой архитектуры.
+
+Если старый endpoint существует и нужен для backward compatibility, его можно временно сохранить как compatibility layer, но новая архитектура должна использовать `/api/...`.
+
+---
+
+# PHASE 1 — AUDIT
+
+## 5. НИЧЕГО НЕ МЕНЯТЬ
+
+На первом этапе запрещено изменять код.
+
+Необходимо только исследовать сервер.
+
+---
+
+## 5.1. Исследовать структуру проекта
+
+Показать:
+
+```text
+tree проекта
+```
+
+или эквивалентный список файлов.
+
+Особенно интересуют:
+
+```text
+main.py
+api/
+services/
+engine/
+templates/
+static/
+tests/
+requirements.txt
+pyproject.toml
+.env*
+```
+
+Секреты НЕ выводить.
+
+---
+
+## 5.2. Исследовать main.py
+
+Определить:
+
+* endpoints;
+* imports;
+* PDF upload;
+* temporary file handling;
+* parser invocation;
+* classifier invocation;
+* Rule Detector;
+* Decision Engine;
+* LLM invocation;
+* response generation;
+* exception handling;
+* cleanup.
+
+Нужно точно определить, где сейчас находится бизнес-логика.
+
+---
+
+## 5.3. Исследовать engine/
+
+Особенно:
+
+```text
+parser
+classifier
+rule_detector
+decision_engine
+llm_interpreter
+llm_providers
+```
+
+Для каждого определить:
+
+* public interface;
+* входные данные;
+* выходные данные;
+* зависимости;
+* где вызывается.
+
+---
+
+# 5.4. Исследовать LLM
+
+Отдельно проверить полный flow:
+
+```text
+main.py
+   ↓
+get_provider()
+   ↓
+LLMInterpreter
+   ↓
+OpenAIProvider
+   ↓
+OpenAI API
+```
+
+Определить:
+
+* где создаётся provider;
+* где создаётся `LLMInterpreter`;
+* как передаются findings;
+* какой JSON возвращается;
+* что происходит при LLM error;
+* есть ли timeout;
+* есть ли retry;
+* что происходит при отсутствии API key.
+
+---
+
+# 5.5. Исследовать конфигурацию
+
+Проверить наличие:
+
+```text
+OPENAI_API_KEY
+LLM_PROVIDER
+```
+
+Не показывать значение `OPENAI_API_KEY`.
+
+Проверить:
+
+```text
+LLM_PROVIDER=openai
+```
+
+и определить, как конфигурация загружается приложением.
+
+---
+
+# 5.6. Исследовать deployment
+
+Проверить:
+
+* systemd;
+* uvicorn;
+* gunicorn, если используется;
+* reverse proxy;
+* nginx;
+* HTTPS;
+* рабочую директорию;
+* Python environment;
+* restart policy.
+
+Не изменять deployment.
+
+---
+
+# 5.7. Исследовать существующие тесты
+
+Найти:
+
+```text
+tests/
+pytest
+unittest
+```
+
+и определить:
+
+* какие тесты существуют;
+* что они проверяют;
+* какие отсутствуют.
+
+---
+
+# 5.8. AUDIT REPORT
+
+После аудита агент НЕ должен сразу менять код.
+
+Он должен выдать отчёт:
+
+```text
+1. Current architecture
+2. Current request flow
+3. Current LLM flow
+4. Current Decision Engine flow
+5. Current deployment
+6. Existing tests
+7. Problems
+8. Migration risks
+9. Proposed target architecture
+10. Files to create
+11. Files to modify
+12. Files that must remain unchanged
+```
+
+Особенно отдельно:
+
+```text
+LLM compatibility assessment
+```
+
+---
+
+# PHASE 2 — PLAN
+
+## 6. ПЛАН МИГРАЦИИ
+
+После AUDIT составить точный migration plan.
+
+Не выполнять изменения, пока план не сформирован.
+
+---
+
+## 6.1. Target structure
+
+Предпочтительная структура:
+
+```text
+project/
+│
+├── main.py
+│
+├── api/
+│   ├── __init__.py
+│   └── analyze.py
+│
+├── services/
+│   ├── __init__.py
+│   └── analysis_service.py
+│
+├── engine/
+│   ├── parser.py
+│   ├── classifier.py
+│   ├── rule_detector.py
+│   ├── decision_engine.py
+│   ├── llm_interpreter.py
+│   └── llm_providers.py
+│
+├── tests/
+│
+└── ...
+```
+
+Названия должны быть адаптированы к фактической структуре проекта.
+
+Не создавать дубликаты существующих модулей без необходимости.
+
+---
+
+# 6.2. Responsibility boundaries
+
+## main.py
+
+Только:
+
+```text
+FastAPI()
+middleware
+startup/shutdown
+router registration
+health/basic application configuration
+```
+
+Никакого:
+
+```text
+PDF parsing
+classification
+rule detection
+decision logic
+LLM orchestration
+```
+
+---
+
+## api/
+
+Отвечает за HTTP.
+
+Например:
+
+```text
+POST /api/analyze
+GET /api/analyze/{task_id}
+```
+
+API layer:
+
+* принимает request;
+* валидирует input;
+* создаёт task;
+* вызывает service;
+* возвращает HTTP response.
+
+API layer не должен содержать Decision Engine logic.
+
+---
+
+## services/analysis_service.py
+
+Главный orchestration layer.
+
+Примерная ответственность:
+
+```text
+analyze_document(...)
+```
+
+Он организует:
+
+```text
+parser
+→ classifier
+→ rule_detector
+→ decision_engine
+→ llm_interpreter
+```
+
+Но сам не должен реализовывать правила Decision Engine.
+
+---
+
+## engine/
+
+Pure business logic.
+
+Сюда относятся:
+
+```text
+parser
+classifier
+rule_detector
+decision_engine
+```
+
+и существующий:
+
+```text
+llm_interpreter
+llm_providers
+```
+
+---
+
+# 6.3. LLM provider factory
+
+Текущий:
+
+```text
+get_provider()
+```
+
+не должен находиться в `main.py`.
+
+Его необходимо перенести в подходящий LLM/service слой.
+
+Например:
+
+```text
+engine/llm_providers.py
+```
+
+или отдельный:
+
+```text
+services/llm_service.py
+```
+
+Но существующий provider API по возможности сохранить.
+
+Главная цель:
+
+```text
+main.py
+    ↓
+analysis_service
+    ↓
+LLM service/interpreter
+    ↓
+existing provider
+```
+
+---
+
+# 6.4. Task management
+
+Нужно определить, как будут храниться задачи.
+
+Для текущего Alpha допустима простая in-memory структура, если она уже используется локально.
+
+Например:
+
+```text
+tasks = {
+    task_id: {
+        status: "processing",
+        result: ...,
+        error: ...
+    }
+}
+```
+
+Но агент обязан оценить последствия:
+
+* restart;
+* concurrent requests;
+* memory;
+* cleanup.
+
+Не внедрять Redis/Celery/PostgreSQL только ради "правильной архитектуры", если это не требуется текущему Alpha.
+
+Цель — минимальная надёжная реализация.
+
+---
+
+# PHASE 3 — MIGRATION
+
+## 7. СОЗДАТЬ BACKUP / ROLLBACK POINT
+
+До изменения файлов:
+
+```text
+git status
+```
+
+Если проект под git:
+
+```text
+git diff
+```
+
+создать commit/tag или иной rollback point.
+
+Если git отсутствует — создать backup изменяемых файлов.
+
+До миграции должно быть возможно вернуть рабочую серверную версию.
+
+---
+
+# 7.1. Создать service layer
+
+Создать:
+
+```text
+services/analysis_service.py
+```
+
+Он должен инкапсулировать orchestration.
+
+Логика:
+
+```text
+1. Receive document
+2. Parse
+3. Classify
+4. Detect rules
+5. Run Decision Engine
+6. Run LLM enrichment
+7. Build result
+8. Return result
+```
+
+---
+
+# 7.2. Создать API layer
+
+Создать соответствующие routers.
+
+Новый endpoint:
+
+```text
+POST /api/analyze
+```
+
+После загрузки файла:
+
+```text
+validate
+save temporary file
+create task_id
+start processing
+return task_id
+```
+
+Response должен позволять клиенту узнать:
+
+```text
+task_id
+status
+```
+
+---
+
+# 7.3. Status endpoint
+
+Создать:
+
+```text
+GET /api/analyze/{task_id}
+```
+
+Состояния:
+
+```text
+processing
+completed
+failed
+```
+
+Для `completed` возвращается результат.
+
+Для `failed`:
+
+```text
+status
+error
+```
+
+Без утечки секретов, API keys и внутренних sensitive details.
+
+---
+
+# 7.4. Background execution
+
+Агент должен использовать простой механизм background execution, совместимый с текущим FastAPI deployment.
+
+Не добавлять тяжёлую инфраструктуру без необходимости.
+
+Важно:
+
+```text
+HTTP request
+    ↓
+task created
+    ↓
+response immediately
+    ↓
+background analysis
+```
+
+---
+
+# 7.5. Перенести LLM orchestration
+
+Из `main.py` убрать:
+
+```text
+interpreter = LLMInterpreter(get_provider())
+enriched_findings = interpreter.interpret(findings)
+```
+
+и соответствующую orchestration логику.
+
+Перенести её в service layer.
+
+Целевой flow:
+
+```text
+analysis_service
+    ↓
+LLMInterpreter
+    ↓
+get_provider()
+    ↓
+OpenAIProvider
+    ↓
+gpt-4o-mini
+```
+
+---
+
+# 7.6. Decision Engine не изменять
+
+В рамках миграции запрещено изменять:
+
+```text
+decision criteria
+thresholds
+factor logic
+risk calculation
+outcomes
+```
+
+Если при миграции обнаружена проблема в Decision Engine:
+
+```text
+STOP
+```
+
+зафиксировать проблему отдельно.
+
+Не исправлять её автоматически.
+
+---
+
+# 7.7. Classifier не изменять
+
+Текущие категории должны остаться прежними.
+
+Например:
+
+```text
+Service Agreement
+NDA
+Employment Contract
+Tenancy Agreement
+Unknown
+```
+
+Если фактическая версия отличается — использовать фактические значения.
+
+Не расширять classifier.
+
+---
+
+# 7.8. Rule Detector не изменять
+
+Rule Detector должен выдавать те же findings, что и до миграции.
+
+Изменяется только место его вызова.
+
+---
+
+# 7.9. Temporary files
+
+После анализа временный PDF должен удаляться.
+
+Cleanup должен происходить:
+
+```text
+success
+failure
+exception
+```
+
+То есть концептуально:
+
+```text
+try:
+    analyze()
+finally:
+    cleanup()
+```
+
+---
+
+# 7.10. Error handling
+
+Ошибки должны разделяться:
+
+```text
+upload error
+parse error
+classification error
+decision engine error
+LLM error
+unknown error
+```
+
+LLM failure не должен автоматически уничтожать уже полученное решение Decision Engine, если текущая бизнес-логика допускает enrichment failure.
+
+Цель:
+
+```text
+Decision Engine result survives LLM failure
+```
+
+но фактическое поведение сначала сверить с текущей реализацией.
+
+Не менять это поведение без фиксации в плане.
+
+---
+
+# PHASE 4 — TEST
+
+## 8. REGRESSION TEST
+
+После миграции сравнить старую и новую архитектуру на одном и том же тестовом PDF.
+
+Сравнивать минимум:
+
+```text
+classification
+findings
+decision
+risk/outcome
+number of findings
+factor IDs
+```
+
+LLM enrichment сравнить отдельно:
+
+```text
+llm_reason
+llm_impact
+llm_suggested_rewrite
+llm_confidence
+```
+
+Важно:
+
+LLM может выдавать немного другой текст при разных вызовах.
+
+Поэтому deterministic regression применяется прежде всего к:
+
+```text
+Decision Engine
+Rule Detector
+Classifier
+```
+
+---
+
+# 8.1. API tests
+
+Проверить:
+
+```text
+POST /api/analyze
+```
+
+Ожидается:
+
+```text
+HTTP success
+task_id
+status
+```
+
+Затем:
+
+```text
+GET /api/analyze/{task_id}
+```
+
+Проверить переход:
+
+```text
+processing
+    ↓
+completed
+```
+
+---
+
+# 8.2. Failed task
+
+Создать тест с некорректным PDF/input.
+
+Проверить:
+
+```text
+processing
+    ↓
+failed
+```
+
+и наличие нормального error response.
+
+---
+
+# 8.3. LLM test
+
+На реальном сервере проверить:
+
+```text
+LLM_PROVIDER=openai
+```
+
+и реальный вызов:
+
+```text
+OpenAIProvider
+```
+
+с текущей моделью:
+
+```text
+gpt-4o-mini
+```
+
+Проверить, что LLM enrichment действительно появляется в результате.
+
+---
+
+# 8.4. LLM failure test
+
+Сымитировать недоступность LLM.
+
+Проверить, что Decision Engine не начинает принимать решения через LLM.
+
+Если текущий контракт системы предусматривает fallback — проверить существующий fallback.
+
+Не создавать новый fallback без согласования.
+
+---
+
+# 8.5. Cleanup test
+
+После:
+
+```text
+completed
+```
+
+временный PDF отсутствует.
+
+После:
+
+```text
+failed
+```
+
+временный PDF также отсутствует.
+
+---
+
+# 8.6. Restart test
+
+Перезапустить приложение.
+
+Проверить:
+
+```text
+server starts
+API available
+LLM configuration loaded
+OpenAI provider initializes
+```
+
+Если task storage in-memory:
+
+зафиксировать, что незавершённые задачи теряются после restart.
+
+Не маскировать это.
+
+---
+
+# 8.7. Health test
+
+Проверить существующий health endpoint, если он есть.
+
+Например:
+
+```text
+GET /health
+```
+
+или фактический endpoint проекта.
+
+---
+
+# 8.8. Browser/UI test
+
+Если frontend уже существует:
+
+```text
+upload PDF
+    ↓
+task_id
+    ↓
+polling
+    ↓
+result
+```
+
+проверить через браузер.
+
+UI в рамках миграции не переделывать без необходимости.
+
+---
+
+# 9. КРИТЕРИИ УСПЕХА
+
+Миграция считается успешной только если одновременно выполнены условия:
+
+### Architecture
+
+```text
+main.py
+```
+
+не содержит бизнес-логику.
+
+### API
+
+Работает:
+
+```text
+POST /api/analyze
+GET /api/analyze/{task_id}
+```
+
+### Decision Engine
+
+Результаты regression test совпадают со старой версией.
+
+### LLM
+
+Работает:
+
+```text
+LLMInterpreter
+→ OpenAIProvider
+→ gpt-4o-mini
+```
+
+### Configuration
+
+Продолжают работать:
+
+```text
+OPENAI_API_KEY
+LLM_PROVIDER=openai
+```
+
+### LLM role
+
+LLM не меняет Decision Engine decision.
+
+### Cleanup
+
+Temporary PDF удаляется.
+
+### Errors
+
+Failed tasks корректно обрабатываются.
+
+### Deployment
+
+Сервер после restart снова работает.
+
+---
+
+# PHASE 5 — DEPLOY
+
+## 10. DEPLOY ТОЛЬКО ПОСЛЕ TEST
+
+Перед deployment агент должен предоставить:
+
+```text
+TEST REPORT
+```
+
+с результатами:
+
+```text
+[PASS] import
+[PASS] API
+[PASS] task creation
+[PASS] polling
+[PASS] completed
+[PASS] failed
+[PASS] classifier regression
+[PASS] rule detector regression
+[PASS] decision engine regression
+[PASS] LLM
+[PASS] cleanup
+[PASS] restart
+```
+
+Если есть `[FAIL]`:
+
+```text
+DO NOT DEPLOY
+```
+
+сначала сообщить о проблеме.
+
+---
+
+# 10.1. Deployment procedure
+
+Перед deployment:
+
+```text
+git status
+git diff
+```
+
+Проверить изменённые файлы.
+
+Не деплоить неожиданные изменения.
+
+---
+
+# 10.2. Restart
+
+После deployment:
+
+```text
+restart service
+```
+
+точной командой текущего deployment.
+
+---
+
+# 10.3. Проверка логов
+
+Проверить startup logs.
+
+Не должно быть:
+
+```text
+ImportError
+ModuleNotFoundError
+LLM initialization error
+configuration error
+```
+
+---
+
+# 10.4. Production smoke test
+
+Выполнить реальный:
+
+```text
+PDF upload
+```
+
+и пройти полный flow:
+
+```text
+POST /api/analyze
+      ↓
+task_id
+      ↓
+processing
+      ↓
+completed
+      ↓
+decision
+      ↓
+LLM enrichment
+```
+
+---
+
+# 10.5. Rollback
+
+Если smoke test failed:
+
+```text
+ROLLBACK
+```
+
+Вернуть предыдущую рабочую версию.
+
+Не пытаться "быстро починить на production" без анализа.
+
+---
+
+# 11. ФИНАЛЬНЫЙ ОТЧЁТ АГЕНТА
+
+После завершения предоставить:
+
+## A. Что было найдено
+
+```text
+Current architecture
+Current LLM architecture
+Current API
+Current deployment
+```
+
+## B. Что изменено
+
+Полный список:
+
+```text
+created
+modified
+deleted
+```
+
+Для каждого файла кратко указать зачем.
+
+## C. Что НЕ изменено
+
+Особенно:
+
+```text
+Decision Engine
+Rule Detector
+Classifier
+LLM provider
+LLM interpreter
+OpenAI configuration
+```
+
+## D. Tests
+
+Таблица:
+
+```text
+Test                         Result
+------------------------------------------------
+Import                       PASS
+API                          PASS
+Task creation                PASS
+Polling                      PASS
+Completed                    PASS
+Failed                       PASS
+Classifier regression        PASS
+Rule Detector regression     PASS
+Decision Engine regression   PASS
+LLM                          PASS
+Cleanup                      PASS
+Restart                      PASS
+Production smoke test        PASS
+```
+
+## E. Deployment
+
+Указать:
+
+```text
+service
+deployment status
+restart status
+health status
+```
+
+## F. Known limitations
+
+Например:
+
+```text
+in-memory tasks are lost after restart
+```
+
+если это действительно так.
+
+Не скрывать ограничения.
+
+---
+
+# 12. ЖЁСТКИЕ ЗАПРЕТЫ
+
+В рамках этой задачи агенту запрещено:
+
+### Запрещено №1
+
+Менять бизнес-логику Decision Engine.
+
+### Запрещено №2
+
+Менять Rule Detector.
+
+### Запрещено №3
+
+Менять classifier.
+
+### Запрещено №4
+
+Удалять или заменять:
+
+```text
+engine/llm_providers.py
+engine/llm_interpreter.py
+```
+
+без отдельного согласования.
+
+### Запрещено №5
+
+Менять:
+
+```text
+LLM_PROVIDER=openai
+```
+
+### Запрещено №6
+
+Менять модель:
+
+```text
+gpt-4o-mini
+```
+
+### Запрещено №7
+
+Убирать LLM enrichment.
+
+### Запрещено №8
+
+Делать LLM Source of Truth.
+
+### Запрещено №9
+
+Добавлять Redis/Celery/PostgreSQL/очереди только ради архитектурной "красоты".
+
+### Запрещено №10
+
+Переделывать frontend.
+
+### Запрещено №11
+
+Добавлять новые продуктовые функции.
+
+### Запрещено №12
+
+Делать deployment до прохождения regression tests.
+
+---
+
+# 13. ПРАВИЛО STOP
+
+Если во время миграции обнаружено:
+
+```text
+Decision Engine отличается
+LLM не совместим
+старый endpoint используется frontend
+deployment устроен иначе
+есть неизвестная зависимость
+есть конфликт модулей
+есть regression
+```
+
+агент НЕ должен самостоятельно менять архитектурные предположения.
+
+Он должен:
+
+```text
+STOP
+↓
+describe problem
+↓
+show evidence
+↓
+propose options
+↓
+wait for approval
+```
+
+---
+
+# 14. ГЛАВНЫЙ ИТОГ
+
+После миграции система должна выглядеть концептуально так:
+
+```text
+                 Browser
+                    │
+                    ▼
+              POST /api/analyze
+                    │
+                    ▼
+                API layer
+                    │
+                    ▼
+             task_id returned
+                    │
+                    ▼
+          Analysis Service
+                    │
+          ┌─────────┴─────────┐
+          ▼                   ▼
+       Document           orchestration
+       parsing                 │
+                               ▼
+                         Classifier
+                               │
+                               ▼
+                         Rule Detector
+                               │
+                               ▼
+                       Decision Engine
+                               │
+                               ▼
+                          FINDINGS
+                               │
+                               ▼
+                       LLM Interpreter
+                               │
+                               ▼
+                       OpenAI Provider
+                               │
+                               ▼
+                         gpt-4o-mini
+                               │
+                               ▼
+                       ENRICHED FINDINGS
+                               │
+                               ▼
+                           RESULT
+                               │
+                               ▼
+                  GET /api/analyze/{id}
+                               │
+                               ▼
+                           Browser
+```
+
+При этом принцип системы остаётся:
+
+```text
+                  DECISION ENGINE
+                         │
+                         │ decides
+                         ▼
+                      DECISION
+                         ▲
+                         │
+                         │ explains/enriches
+                         │
+                         LLM
+```
+
+**LLM не принимает решение.**
+
+---
+
+# 15. ПОРЯДОК ВЫПОЛНЕНИЯ
+
+Строго:
+
+```text
+PHASE 1
+AUDIT
+  ↓
+AUDIT REPORT
+  ↓
+PHASE 2
+PLAN
+  ↓
+MIGRATION PLAN
+  ↓
+PHASE 3
+MIGRATION
+  ↓
+PHASE 4
+TEST
+  ↓
+TEST REPORT
+  ↓
+PHASE 5
+DEPLOY
+  ↓
+PRODUCTION SMOKE TEST
+  ↓
+FINAL REPORT
+```
+
+Нельзя перескакивать через этапы.
+
+Особенно:
+
+```text
+AUDIT → сразу код
+```
+
+недопустимо.
+
+Сначала показать картину сервера и план.
+
+---
+
+# КОНЕЧНАЯ ЦЕЛЬ
+
+Получить на production не "новую систему", а:
+
+> **ту же работающую систему с тем же Decision Engine и той же LLM, но с правильным разделением API / services / engine и с новой task-based архитектурой анализа.**
+
+Функциональное поведение должно максимально сохраниться.
+
+Изменяется прежде всего:
+
+```text
+ARCHITECTURE
+ORCHESTRATION
+API FLOW
+TASK PROCESSING
+```
+
+а не:
+
+```text
+BUSINESS LOGIC
+DECISION LOGIC
+LLM ROLE
+```
