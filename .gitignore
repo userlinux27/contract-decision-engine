@@ -21,6 +21,7 @@ Thumbs.db
 
 # Local backups and archives
 *.tar.gz
+*.bak
 
 # Local assets (not yet integrated)
 favicon.jpg
@@ -29,3 +30,10 @@ favicon.jpg
 
 # Internal production notes (not for public repo)
 docs/PRODUCTION_STATE.md
+
+# Lead research / CRM exports (personal data, not part of this project)
+full_companies.csv
+full_prospects.csv
+
+# Internal notes from other projects (not part of this repository)
+Это*
