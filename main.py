@@ -107,8 +107,7 @@ async def robots():
 async def templates_catalog(request: Request):
     """Templates catalog page."""
     all_templates = list_all_templates()
-    return templates.TemplateResponse("templates/catalog.html", {
-        "request": request,
+    return templates.TemplateResponse(request, "templates/catalog.html", {
         "templates": all_templates,
         "base_url": BASE_URL,
     })
@@ -130,8 +129,7 @@ async def template_page(request: Request, slug: str):
     # Build canonical URL
     canonical_url = f"{BASE_URL}/templates/{slug}"
     
-    return templates.TemplateResponse("templates/detail.html", {
-        "request": request,
+    return templates.TemplateResponse(request, "templates/detail.html", {
         "template": metadata,
         "document_html": document_html,
         "related_templates": related,
@@ -269,8 +267,7 @@ async def sitemap():
 @app.get("/tools/contract-risk-checker", response_class=HTMLResponse)
 async def tool_page(request: Request):
     """Free Contract Risk Checker tool page."""
-    return templates.TemplateResponse("templates/tool.html", {
-        "request": request,
+    return templates.TemplateResponse(request, "templates/tool.html", {
         "base_url": BASE_URL,
     })
 
