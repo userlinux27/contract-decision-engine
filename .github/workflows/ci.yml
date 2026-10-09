@@ -1,0 +1,105 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install -r requirements.txt httpx
+      - name: Run unit tests
+        env:
+          LLM_PROVIDER: stub
+          BASE_URL: http://localhost:8000
+        run: |
+          python - <<'PY'
+          import sys
+          sys.path.insert(0, '.')
+          from main import app
+          from fastapi.testclient import TestClient
+
+          client = TestClient(app)
+
+          # Test root
+          r = client.get('/')
+          assert r.status_code == 200, f"Root: expected 200, got {r.status_code}"
+          print("Root: 200 OK")
+
+          # Test templates catalog
+          r = client.get('/templates')
+          assert r.status_code == 200, f"Catalog: expected 200, got {r.status_code}"
+          print("Catalog: 200 OK")
+
+          # Test health endpoint
+          r = client.get('/api/health')
+          assert r.status_code == 200, f"Health: expected 200, got {r.status_code}"
+          data = r.json()
+          assert data.get('status') == 'healthy', f"Health status: {data}"
+          print("Health: 200 OK")
+
+          # Test static files
+          r = client.get('/static/styles.css')
+          assert r.status_code == 200, f"Styles: expected 200, got {r.status_code}"
+          print("Styles: 200 OK")
+
+          r = client.get('/static/js/template-page.js')
+          assert r.status_code == 200, f"JS: expected 200, got {r.status_code}"
+          print("JS: 200 OK")
+
+          # Test all template pages
+          slugs = [
+              'consulting-agreement',
+              'freelance-agreement',
+              'independent-contractor-agreement',
+              'master-services-agreement-msa',
+              'non-disclosure-agreement-nda'
+          ]
+          for slug in slugs:
+              r = client.get(f'/templates/{slug}')
+              assert r.status_code == 200, f"{slug}: expected 200, got {r.status_code}"
+              # Verify key content sections exist
+              assert 'Key Clauses' in r.text, f"{slug}: missing 'Key Clauses'"
+              assert 'Frequently Asked Questions' in r.text, f"{slug}: missing 'FAQ'"
+              assert 'Did the client send' in r.text, f"{slug}: missing bridge text"
+              print(f"{slug}: 200 OK ({len(r.text)} chars)")
+
+          # Test analytics endpoint
+          r = client.post('/analytics/event', json={'event': 'template_page_view', 'template_slug': 'test'})
+          assert r.status_code == 200, f"Analytics: expected 200, got {r.status_code}"
+          print("Analytics: 200 OK")
+
+          # Test demo fixtures
+          for fixture_type, expected_decision in [
+              ('safe', 'safe_to_sign'),
+              ('changes', 'sign_after_changes'),
+              ('reject', 'do_not_sign')
+          ]:
+              r = client.get(f'/analyze/{fixture_type}')
+              assert r.status_code == 200, f"Fixture {fixture_type}: expected 200, got {r.status_code}"
+              data = r.json()
+              assert data.get('decision') == expected_decision, f"Fixture {fixture_type}: expected {expected_decision}, got {data.get('decision')}"
+              print(f"Fixture {fixture_type}: {expected_decision} OK")
+
+          # Test API analyze GET returns 405
+          r = client.get('/api/analyze')
+          assert r.status_code == 405, f"API analyze GET: expected 405, got {r.status_code}"
+          print("API analyze GET: 405 OK")
+
+          # Test tasks list
+          r = client.get('/api/tasks/')
+          assert r.status_code == 200, f"Tasks list: expected 200, got {r.status_code}"
+          data = r.json()
+          assert 'tasks' in data and isinstance(data['tasks'], list), "Tasks list missing 'tasks' array"
+          print("Tasks list: 200 OK")
+
+          print("\n=== ALL TESTS PASSED ===")
+          PY
