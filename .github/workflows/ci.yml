@@ -15,7 +15,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install dependencies
-        run: pip install -r requirements.txt httpx
+        run: pip install -r requirements.txt httpx pytest
       - name: Run unit tests
         env:
           LLM_PROVIDER: stub
@@ -103,3 +103,7 @@ jobs:
 
           print("\n=== ALL TESTS PASSED ===")
           PY
+      - name: Run pytest tests
+        env:
+          LLM_PROVIDER: stub
+        run: python -m pytest tests/ -v
