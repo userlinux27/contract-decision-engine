@@ -107,3 +107,44 @@ jobs:
         env:
           LLM_PROVIDER: stub
         run: python -m pytest tests/ -v
+
+  docker-smoke:
+    runs-on: ubuntu-24.04
+    needs: test
+    steps:
+      - uses: actions/checkout@v5
+      - name: Build Docker image
+        run: docker build -t cde:smoke .
+      - name: Run container
+        run: |
+          docker run -d --name cde-smoke \
+            -p 8000:8000 \
+            -e LLM_PROVIDER=stub \
+            -e BASE_URL=http://localhost:8000 \
+            cde:smoke
+      - name: Wait for health endpoint
+        run: |
+          for i in {1..30}; do
+            if curl -sf http://localhost:8000/api/health | python3 -c "import sys, json; sys.exit(0 if json.load(sys.stdin).get('status') == 'healthy' else 1)"; then
+              echo "Health check passed"
+              exit 0
+            fi
+            echo "Waiting for health... ($i/30)"
+            sleep 2
+          done
+          echo "Health check failed after 60s"
+          docker logs cde-smoke
+          exit 1
+      - name: Smoke test endpoints
+        run: |
+          # Health endpoint - parse JSON, assert status == healthy
+          curl -sf http://localhost:8000/api/health | python3 -c "import sys, json; sys.exit(0 if json.load(sys.stdin).get('status') == 'healthy' else 1)"
+          # Root page
+          curl -sf http://localhost:8000/ | grep -q 'Contract Decision Engine'
+          # Templates catalog - fetch once, check both markers
+          TEMPLATES_HTML=$(curl -sf http://localhost:8000/templates)
+          echo "$TEMPLATES_HTML" | grep -q 'Templates'
+          echo "$TEMPLATES_HTML" | grep -q 'consulting-agreement'
+      - name: Cleanup container
+        if: always()
+        run: docker rm -f cde-smoke || true
