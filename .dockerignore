@@ -17,6 +17,13 @@ venv
 env
 *.egg-info
 
+# Environment & secrets
+.env
+.env.*
+*.key
+*.pem
+*.secret
+
 # IDE
 .vscode
 .idea
