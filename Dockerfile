@@ -2,7 +2,7 @@
 # Multi-stage build for smaller production image
 
 # ===== Base stage =====
-FROM python:3.11-slim AS base
+FROM python:3.11-slim@sha256:e529028263dbe6910a2d96f7d2b8f5266385e917fd45d286ef166977c094a51e AS base
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \

@@ -70,3 +70,21 @@ full_*.csv
 *lineage*
 *bug*
 *metadata*
+
+# Staging directories
+staging-data/
+staging-uploads/
+
+# Staging config
+docker-compose.staging.yml
+
+# Local artifacts
+*.ico
+*.png
+*.tmp
+STAGING_TEST_MARKER.tmp
+favicon.ico
+favicon-*.ico
+favicon-*.png
+favicon-comparison.png
+favicon-enlarged-preview.ico
